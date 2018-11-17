@@ -1,7 +1,9 @@
 import React from 'react';
+import { render, shallow } from 'enzyme';
+import { ThemeProvider } from 'react-jss';
 import Profile from './index';
 import Counter from '../Counter';
-import { render, shallow } from 'enzyme';
+import theme from '../../theme';
 
 const data = {
   imgSrc: './img.test.jpg',
@@ -15,7 +17,11 @@ const data = {
 
 describe('<Profile />', () => {
   it('renders without crashing', () => {
-    const wrapper = render(<Profile data={data} />);
+    const wrapper = render(
+      <ThemeProvider theme={theme}>
+        <Profile data={data} />
+      </ThemeProvider>,
+    );
     expect(wrapper.find('h1').text()).toBe('Harvey Specter');
     expect(wrapper.find('button').length).toBe(3);
     expect(wrapper.find('img').attr('src')).toBe(data.imgSrc);
