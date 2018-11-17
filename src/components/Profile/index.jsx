@@ -1,10 +1,24 @@
 // @flow
 import React from 'react';
 import injectSheet from 'react-jss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShareSquare as ShareIcon } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as LikeIcon } from '@fortawesome/free-regular-svg-icons';
 
 import Counter from '../Counter';
 
 const photoOffset = 48;
+
+const button = {
+  border: 'none',
+  outline: 'none',
+  cursor: 'pointer',
+};
+const iconButton = {
+  ...button,
+  position: 'absolute',
+  padding: 10,
+};
 
 const styles = theme => ({
   root: {
@@ -52,15 +66,18 @@ const styles = theme => ({
     display: 'inline-block',
   },
   btnLike: {
-    position: 'absolute',
-    display: 'inline-block',
-    marginLeft: 13,
-    verticalAlign: 'middle',
+    ...iconButton,
+    marginTop: -7,
+    color: '#d3d3d3',
+    '&:hover': {
+      color: '#f00',
+    },
   },
   btnShare: {
-    position: 'absolute',
+    ...iconButton,
     top: 0,
     right: 0,
+    color: theme.color.secondary,
   },
   counterList: {
     display: 'flex',
@@ -75,11 +92,11 @@ const styles = theme => ({
   },
   footer: {},
   btnFollow: {
+    ...button,
     backgroundColor: theme.color.secondary,
     color: theme.color.white,
     textAlign: 'center',
     textTransform: 'uppercase',
-    border: 'none',
     width: '100%',
     height: 46,
     borderRadius: 100,
@@ -124,7 +141,7 @@ export const Profile = ({
         <div className={classes.firstLine}>
           <h1 className={classes.name}>{name}</h1>
           <button className={classes.btnLike} onClick={handleLike}>
-            like
+            <FontAwesomeIcon icon={LikeIcon} />
           </button>
         </div>
         <div className={classes.secondLine}>
@@ -133,7 +150,7 @@ export const Profile = ({
       </div>
 
       <button className={classes.btnShare} onClick={handleShare}>
-        share
+        <FontAwesomeIcon icon={ShareIcon} />
       </button>
 
       <div className={classes.counterList}>
