@@ -39,11 +39,14 @@ describe('<App /> shallow', () => {
     const profile = wrapper.find(Profile);
     expect(profile.length).toBe(1);
     expect(profile.prop('data')).toEqual(profileData);
+    expect(profile.prop('isFollowed')).toEqual(false);
+    expect(profile.prop('isLiked')).toEqual(false);
   });
   test('state after componentDidMount', () => {
     expect(wrapper.state()).toEqual({
       data: profileData,
       isFollowed: false,
+      isLiked: false,
     });
   });
   test('handleFollow() method', () => {
@@ -53,5 +56,13 @@ describe('<App /> shallow', () => {
     wrapper.instance().handleFollow();
     expect(wrapper.state('isFollowed')).toBe(false);
     expect(wrapper.state('data').followers).toBe(profileData.followers);
+  });
+  test('handleLike() method', () => {
+    wrapper.instance().handleLike();
+    expect(wrapper.state('isLiked')).toBe(true);
+    expect(wrapper.state('data').likes).toBe(profileData.likes + 1);
+    wrapper.instance().handleLike();
+    expect(wrapper.state('isLiked')).toBe(false);
+    expect(wrapper.state('data').likes).toBe(profileData.likes);
   });
 });
