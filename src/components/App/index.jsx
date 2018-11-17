@@ -1,10 +1,20 @@
 // @flow
 import React from 'react';
 import Profile from '../Profile';
+import WebFont from 'webfontloader';
 
 type Props = {};
 
 class App extends React.Component<Props> {
+  constructor() {
+    super();
+    WebFont.load({
+      google: {
+        families: ['Montserrat:400,600', 'sans-serif'],
+      },
+    });
+  }
+
   handleFollow() {}
   handleShare() {}
   handleLike() {}
