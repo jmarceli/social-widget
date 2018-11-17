@@ -88,7 +88,10 @@ export class App extends React.Component<Props, State> {
     });
   }
 
-  handleShare() {}
+  handleShare() {
+    window.alert(window.location.href);
+  }
+
   handleLike() {
     this.setState(oldState => {
       const alreadyLiked = oldState.isLiked;

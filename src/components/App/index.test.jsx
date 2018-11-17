@@ -18,6 +18,9 @@ const profileData = {
 };
 loadData.mockImplementation(() => profileData);
 
+const mockAlert = jest.fn();
+window.alert = mockAlert;
+
 describe('<App />', () => {
   test('mounting without crash', async () => {
     const wrapper = await mount(
@@ -64,5 +67,10 @@ describe('<App /> shallow', () => {
     wrapper.instance().handleLike();
     expect(wrapper.state('isLiked')).toBe(false);
     expect(wrapper.state('data').likes).toBe(profileData.likes);
+  });
+
+  test('handleShare() method', () => {
+    wrapper.instance().handleShare();
+    expect(mockAlert).toHaveBeenCalledTimes(1);
   });
 });
