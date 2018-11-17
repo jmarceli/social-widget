@@ -7,7 +7,7 @@ import theme from '../../theme';
 import { loadData } from '../../dataSources';
 jest.mock('../../dataSources');
 
-loadData.mockImplementation(() => ({
+const profileData = {
   imgSrc: './harvey-specter.jpg',
   name: 'Harvey Specter',
   city: 'New York',
@@ -15,10 +15,11 @@ loadData.mockImplementation(() => ({
   likes: 121,
   following: 723,
   followers: 4433,
-}));
+};
+loadData.mockImplementation(() => profileData);
 
 describe('<App />', () => {
-  it('renders without crashing', async () => {
+  test('mounting without crash', async () => {
     const wrapper = await mount(
       <ThemeProvider theme={theme}>
         <AppStyled classes={{}} />
@@ -26,8 +27,31 @@ describe('<App />', () => {
     );
     expect(wrapper.text()).toContain('Harvey Specter');
   });
-  it('has one Profile component', () => {
-    const wrapper = shallow(<App classes={{}} />);
-    expect(wrapper.find(Profile).length).toBe(1);
+});
+
+describe('<App /> shallow', () => {
+  let wrapper;
+  beforeAll(() => {
+    wrapper = shallow(<App classes={{}} />);
+  });
+
+  test('props of Profile component', () => {
+    const profile = wrapper.find(Profile);
+    expect(profile.length).toBe(1);
+    expect(profile.prop('data')).toEqual(profileData);
+  });
+  test('state after componentDidMount', () => {
+    expect(wrapper.state()).toEqual({
+      data: profileData,
+      isFollowed: false,
+    });
+  });
+  test('handleFollow() method', () => {
+    wrapper.instance().handleFollow();
+    expect(wrapper.state('isFollowed')).toBe(true);
+    expect(wrapper.state('data').followers).toBe(profileData.followers + 1);
+    wrapper.instance().handleFollow();
+    expect(wrapper.state('isFollowed')).toBe(false);
+    expect(wrapper.state('data').followers).toBe(profileData.followers);
   });
 });

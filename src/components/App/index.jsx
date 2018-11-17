@@ -39,10 +39,12 @@ type Props = {
 };
 type State = {
   data: ProfileData,
+  isFollowed: boolean,
 };
 
 export class App extends React.Component<Props, State> {
   state = {
+    isFollowed: false,
     data: {
       imgSrc: '',
       name: '',
@@ -70,13 +72,26 @@ export class App extends React.Component<Props, State> {
     });
   }
 
-  handleFollow() {}
+  handleFollow() {
+    this.setState(oldState => {
+      const alreadyFollowed = oldState.isFollowed;
+      const followers = alreadyFollowed
+        ? oldState.data.followers - 1
+        : oldState.data.followers + 1;
+
+      return {
+        data: { ...oldState.data, followers },
+        isFollowed: !oldState.isFollowed,
+      };
+    });
+  }
+
   handleShare() {}
   handleLike() {}
 
   render() {
     const { classes } = this.props;
-    const { data } = this.state;
+    const { data, isFollowed } = this.state;
 
     return (
       <div className={classes.root}>
@@ -85,6 +100,7 @@ export class App extends React.Component<Props, State> {
           <div className={classes.container}>
             <Profile
               data={data}
+              isFollowed={isFollowed}
               handleShare={() => this.handleShare()}
               handleFollow={() => this.handleFollow()}
               handleLike={() => this.handleLike()}
