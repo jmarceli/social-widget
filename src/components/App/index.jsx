@@ -4,6 +4,9 @@ import Profile from '../Profile';
 import WebFont from 'webfontloader';
 import injectSheet from 'react-jss';
 
+import { loadData } from '../../dataSources';
+import type { ProfileData } from '../../dataSources';
+
 const topPadding = 12;
 const bgTopHeight = 95;
 
@@ -34,8 +37,23 @@ const styles = theme => ({
 type Props = {
   classes: { [string]: {} },
 };
+type State = {
+  data: ProfileData,
+};
 
-export class App extends React.Component<Props> {
+export class App extends React.Component<Props, State> {
+  state = {
+    data: {
+      imgSrc: '',
+      name: '',
+      city: '',
+      country: '',
+      followers: 0,
+      likes: 0,
+      following: 0,
+    },
+  };
+
   constructor() {
     super();
     WebFont.load({
@@ -45,21 +63,20 @@ export class App extends React.Component<Props> {
     });
   }
 
+  async componentDidMount() {
+    const data = await loadData('./profile.json');
+    this.setState({
+      data,
+    });
+  }
+
   handleFollow() {}
   handleShare() {}
   handleLike() {}
 
   render() {
     const { classes } = this.props;
-    const data = {
-      imgSrc: './harvey-specter.jpg',
-      name: 'Harvey Specter',
-      city: 'New York',
-      country: 'USA',
-      likes: 121,
-      following: 723,
-      followers: 4433,
-    };
+    const { data } = this.state;
 
     return (
       <div className={classes.root}>
