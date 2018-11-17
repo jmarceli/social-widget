@@ -10,3 +10,12 @@ if (!root) {
 }
 
 ReactDOM.render(<Root />, root);
+
+/* eslint-disable */
+// $FlowFixMe
+if (module.hot) {
+  module.hot.accept('./components/Root', () => {
+    const NextRoot = require('./components/Root').default;
+    ReactDOM.render(<NextRoot />, root);
+  });
+}
