@@ -24,7 +24,7 @@ const Profile = ({
   handleShare,
 }: Props) => (
   <section>
-    <img src={imgSrc} alt="{name}" />
+    <img src={imgSrc} alt={name} />
 
     <div>
       <div>
