@@ -2,10 +2,40 @@
 import React from 'react';
 import Profile from '../Profile';
 import WebFont from 'webfontloader';
+import injectSheet from 'react-jss';
 
-type Props = {};
+const topPadding = 12;
+const bgTopHeight = 95;
 
-class App extends React.Component<Props> {
+const styles = theme => ({
+  root: {
+    paddingTop: topPadding,
+    width: 320,
+  },
+  bgTop: {
+    background: theme.color.primary,
+    height: bgTopHeight,
+    borderRadius: '5px 5px 0 0',
+  },
+  bgBottom: {
+    background: theme.color.white,
+    boxShadow: '0 0 4px 0 rgba(172,172,172,0.50)',
+    borderRadius: 5,
+  },
+  container: {
+    marginTop: -bgTopHeight - topPadding,
+    background: 'none',
+    marginLeft: 17,
+    width: '100%',
+    display: 'inline-block',
+  },
+});
+
+type Props = {
+  classes: { [string]: {} },
+};
+
+export class App extends React.Component<Props> {
   constructor() {
     super();
     WebFont.load({
@@ -20,6 +50,7 @@ class App extends React.Component<Props> {
   handleLike() {}
 
   render() {
+    const { classes } = this.props;
     const data = {
       imgSrc: './harvey-specter.jpg',
       name: 'Harvey Specter',
@@ -31,16 +62,21 @@ class App extends React.Component<Props> {
     };
 
     return (
-      <div className="App">
-        <Profile
-          data={data}
-          handleShare={() => this.handleShare()}
-          handleFollow={() => this.handleFollow()}
-          handleLike={() => this.handleLike()}
-        />
+      <div className={classes.root}>
+        <div className={classes.bgBottom}>
+          <div className={classes.bgTop} />
+          <div className={classes.container}>
+            <Profile
+              data={data}
+              handleShare={() => this.handleShare()}
+              handleFollow={() => this.handleFollow()}
+              handleLike={() => this.handleLike()}
+            />
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+export default injectSheet(styles)(App);
