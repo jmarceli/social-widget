@@ -1,12 +1,17 @@
 module.exports = {
   env: {
     browser: true,
-    "jest/globals": true
+    'jest/globals': true,
   },
   extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:flowtype/recommended"
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:flowtype/recommended',
   ],
-  plugins: ["react", "flowtype", "jest"]
+  plugins: ['react', 'flowtype', 'jest'],
+  settings: {
+    react: {
+      version: '16.6',
+    },
+  },
 };
