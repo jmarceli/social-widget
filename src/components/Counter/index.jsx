@@ -8,6 +8,7 @@ const styles = theme => ({
     fontSize: 24,
     color: theme.color.secondary,
     marginBottom: 3,
+    minWidth: 70,
   },
   label: {
     fontSize: 10,
