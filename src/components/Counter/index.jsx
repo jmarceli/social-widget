@@ -5,10 +5,13 @@ import injectSheet from 'react-jss';
 const styles = theme => ({
   root: {},
   count: {
+    fontSize: 24,
     color: theme.color.secondary,
+    marginBottom: 3,
   },
   label: {
-    color: theme.color.primary,
+    fontSize: 10,
+    color: '#343e00',
   },
 });
 
