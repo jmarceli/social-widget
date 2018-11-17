@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, shallow } from 'enzyme';
 import { ThemeProvider } from 'react-jss';
-import Profile from './index';
+import ProfileStyled, { Profile } from './index';
 import Counter from '../Counter';
 import theme from '../../theme';
 
@@ -15,20 +15,30 @@ const data = {
   followers: 4433,
 };
 
-describe('<Profile />', () => {
+describe('<Profile /> rendering', () => {
   it('renders without crashing', () => {
     const wrapper = render(
       <ThemeProvider theme={theme}>
-        <Profile data={data} />
+        <ProfileStyled classes={{}} data={data} />
       </ThemeProvider>,
     );
-    expect(wrapper.find('h1').text()).toBe('Harvey Specter');
+    expect(wrapper.find('h1').text()).toBe(data.name);
     expect(wrapper.find('button').length).toBe(3);
     expect(wrapper.find('img').attr('src')).toBe(data.imgSrc);
     expect(wrapper.find('img').attr('alt')).toBe(data.name);
   });
+});
+describe('<Profile /> shallow', () => {
+  let wrapper;
+  beforeAll(() => {
+    wrapper = shallow(<Profile classes={{}} data={data} />);
+  });
   it('renders 3 Counters', () => {
-    const wrapper = shallow(<Profile data={data} />);
     expect(wrapper.find(Counter).length).toBe(3);
+  });
+  it('first Counter has correct props', () => {
+    const firstCounter = wrapper.find(Counter).first();
+    expect(firstCounter.prop('label')).toBe('Likes');
+    expect(firstCounter.prop('count')).toBe(data.likes);
   });
 });
