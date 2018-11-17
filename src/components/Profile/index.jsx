@@ -123,6 +123,7 @@ type Props = {
   },
   handleLike: () => void,
   handleFollow: () => void,
+  isFollowed: boolean,
   handleShare: () => void,
 };
 
@@ -131,6 +132,7 @@ export const Profile = ({
   data: { imgSrc, name, city, country, likes, following, followers },
   handleLike,
   handleFollow,
+  isFollowed,
   handleShare,
 }: Props) => (
   <section className={classes.root}>
@@ -165,7 +167,7 @@ export const Profile = ({
 
       <div className={classes.footer}>
         <button className={classes.btnFollow} onClick={handleFollow}>
-          Follow
+          {isFollowed ? 'Unfollow' : 'Follow'}
         </button>
       </div>
     </div>

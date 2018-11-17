@@ -28,17 +28,24 @@ describe('<Profile /> rendering', () => {
     expect(wrapper.find('img').attr('alt')).toBe(data.name);
   });
 });
+
 describe('<Profile /> shallow', () => {
   let wrapper;
   beforeAll(() => {
-    wrapper = shallow(<Profile classes={{}} data={data} />);
+    wrapper = shallow(<Profile classes={{}} data={data} isFollowed={false} />);
   });
-  it('renders 3 Counters', () => {
+  test('number of rendered Counters', () => {
     expect(wrapper.find(Counter).length).toBe(3);
   });
-  it('first Counter has correct props', () => {
+  test('first Counter props', () => {
     const firstCounter = wrapper.find(Counter).first();
     expect(firstCounter.prop('label')).toBe('Likes');
     expect(firstCounter.prop('count')).toBe(data.likes);
+  });
+  test('Follow/Unfollow button', () => {
+    wrapper.setProps({ classes: { btnFollow: 'bf' } });
+    expect(wrapper.find('.bf').text()).toBe('Follow');
+    wrapper.setProps({ isFollowed: true });
+    expect(wrapper.find('.bf').text()).toBe('Unfollow');
   });
 });
