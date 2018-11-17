@@ -6,6 +6,7 @@ import { faShareSquare as ShareIcon } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as LikeIcon } from '@fortawesome/free-regular-svg-icons';
 
 import Counter from '../Counter';
+import type { Theme } from '../../theme';
 
 const photoOffset = 48;
 
@@ -21,7 +22,7 @@ const iconButton = {
   padding: 10,
 };
 
-const styles = theme => ({
+export const styles = (theme: Theme) => ({
   root: {
     paddingTop: photoOffset,
     maxWidth: 283,
@@ -67,14 +68,14 @@ const styles = theme => ({
     color: theme.color.primary,
     display: 'inline-block',
   },
-  btnLike: {
+  btnLike: ({ isLiked }: { isLiked: boolean }) => ({
     ...iconButton,
     marginTop: -7,
-    color: '#d3d3d3',
+    color: isLiked ? '#f00' : '#d3d3d3',
     '&:hover': {
-      color: '#f00',
+      color: isLiked ? '#d3d3d3' : '#f00',
     },
-  },
+  }),
   btnShare: {
     ...iconButton,
     top: 0,
@@ -124,6 +125,7 @@ type Props = {
   handleLike: () => void,
   handleFollow: () => void,
   isFollowed: boolean,
+  isLiked: boolean,
   handleShare: () => void,
 };
 
