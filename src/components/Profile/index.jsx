@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import Counter from '../Counter';
 
 type Props = {
   data: {
@@ -38,18 +39,9 @@ const Profile = ({
     <button onClick={handleShare}>share</button>
 
     <div>
-      <div>
-        <div>{likes}</div>
-        <div>Likes</div>
-      </div>
-      <div>
-        <div>{following}</div>
-        <div>Following</div>
-      </div>
-      <div>
-        <div>{followers}</div>
-        <div>Followers</div>
-      </div>
+      <Counter label="Likes" count={likes} />
+      <Counter label="Following" count={following} />
+      <Counter label="Followers" count={followers} />
     </div>
 
     <div>

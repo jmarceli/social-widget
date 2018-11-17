@@ -1,6 +1,7 @@
 import React from 'react';
 import Profile from './index';
-import { render } from 'enzyme';
+import Counter from '../Counter';
+import { render, shallow } from 'enzyme';
 
 const data = {
   img: './img.test.jpg',
@@ -17,5 +18,9 @@ describe('<Profile />', () => {
     const wrapper = render(<Profile data={data} />);
     expect(wrapper.find('h1').text()).toBe('Harvey Specter');
     expect(wrapper.find('button').length).toBe(3);
+  });
+  it('renders 3 Counters', () => {
+    const wrapper = shallow(<Profile data={data} />);
+    expect(wrapper.find(Counter).length).toBe(3);
   });
 });
