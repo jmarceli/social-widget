@@ -16,6 +16,7 @@ const button = {
 };
 const iconButton = {
   ...button,
+  background: 'none',
   position: 'absolute',
   padding: 10,
 };
@@ -44,6 +45,7 @@ const styles = theme => ({
   img: {
     width: 70,
     height: 70,
+    borderRadius: '50%',
   },
   header: {
     textAlign: 'center',
