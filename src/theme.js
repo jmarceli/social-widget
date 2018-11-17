@@ -1,3 +1,8 @@
+// @flow
+export type Theme = {
+  [string]: any,
+};
+
 const theme = {
   color: {
     primary: '#002c71',
