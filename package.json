@@ -2,6 +2,8 @@
   "name": "social-profile",
   "version": "0.1.0",
   "private": true,
+  "author": "Jan Grzegorowski",
+  "homepage": ".",
   "dependencies": {
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -10,7 +12,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --notify",
+    "lint": "eslint src",
+    "flow": "flow src",
+    "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
