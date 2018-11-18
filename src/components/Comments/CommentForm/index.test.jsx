@@ -1,5 +1,5 @@
 import React from 'react';
-import CommentForm from './index';
+import CommentFormStyled, { CommentForm } from './index';
 import { shallow, render } from 'enzyme';
 import theme from '../../../theme';
 import { ThemeProvider } from 'react-jss';
@@ -11,7 +11,7 @@ describe('<CommentForm />', () => {
   it('renders without crashing', () => {
     const wrapper = render(
       <ThemeProvider theme={theme}>
-        <CommentForm handleFormSubmit={submitHandler} />
+        <CommentFormStyled handleFormSubmit={submitHandler} />
       </ThemeProvider>,
     );
     expect(wrapper.text()).toContain('Add a comment');
@@ -21,7 +21,9 @@ describe('<CommentForm />', () => {
 describe('<CommentForm /> shallow', () => {
   let wrapper;
   beforeAll(() => {
-    wrapper = shallow(<CommentForm handleFormSubmit={submitHandler} />);
+    wrapper = shallow(
+      <CommentForm classes={{}} handleFormSubmit={submitHandler} />,
+    );
   });
   test('<Form/> component', () => {
     const form = wrapper.find(Form);
