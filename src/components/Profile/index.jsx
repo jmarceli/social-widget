@@ -190,6 +190,9 @@ export const styles = (theme: Theme) => ({
       margin: '0 0 0 15px',
     },
   },
+  isFollowed: {
+    letterSpacing: '2px',
+  },
 });
 
 type Props = {
@@ -260,7 +263,13 @@ export const Profile = ({
           />
         </div>
 
-        <button className={classes.btnFollow} onClick={handleFollow}>
+        <button
+          className={classNames(
+            classes.btnFollow,
+            isFollowed && classes.isFollowed,
+          )}
+          onClick={handleFollow}
+        >
           {isFollowed ? 'Unfollow' : 'Follow'}
         </button>
       </div>

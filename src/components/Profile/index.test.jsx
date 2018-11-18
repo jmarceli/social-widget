@@ -45,10 +45,12 @@ describe('<Profile /> shallow', () => {
     expect(firstCounter.prop('count')).toBe(data.likes);
   });
   test('Follow/Unfollow button', () => {
-    wrapper.setProps({ classes: { btnFollow: 'bf' } });
+    wrapper.setProps({ classes: { btnFollow: 'bf', isFollowed: 'if' } });
     expect(wrapper.find('.bf').text()).toBe('Follow');
+    expect(wrapper.find('.if').length).toBe(0);
     wrapper.setProps({ isFollowed: true });
     expect(wrapper.find('.bf').text()).toBe('Unfollow');
+    expect(wrapper.find('.if').length).toBe(1);
   });
   test('Like/Dislike button', () => {
     wrapper.setProps({ classes: { btnLike: 'bl', isLiked: 'il' } });
