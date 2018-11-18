@@ -4,7 +4,6 @@ import CommentItem from '../CommentItem';
 import injectSheet from 'react-jss';
 
 import type { Props as Comment } from '../CommentItem';
-
 type Props = {
   classes: { [string]: string },
   list: Comment[],
@@ -12,7 +11,8 @@ type Props = {
 
 const styles = () => ({
   root: {
-    maxHeight: 470,
+    height: 440,
+    overflow: 'scroll',
   },
   list: {
     listStyle: 'none',
