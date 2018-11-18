@@ -45,7 +45,7 @@ type Props = {
 type State = {
   commentList: Comment[],
   profile: ProfileData,
-  isHidden: boolean,
+  commentsHidden: boolean,
   isFollowed: boolean,
   isLiked: boolean,
 };
@@ -54,7 +54,7 @@ export class App extends React.Component<Props, State> {
   state = {
     isFollowed: false,
     isLiked: false,
-    isHidden: false,
+    commentsHidden: false,
     commentList: [],
     profile: {
       imgSrc: '',
@@ -116,11 +116,23 @@ export class App extends React.Component<Props, State> {
     });
   }
 
-  handleCommentsHide() {}
+  handleCommentsHide() {
+    this.setState(oldState => {
+      return {
+        commentsHidden: !oldState.commentsHidden,
+      };
+    });
+  }
 
   render() {
     const { classes } = this.props;
-    const { profile, commentList, isFollowed, isLiked, isHidden } = this.state;
+    const {
+      profile,
+      commentList,
+      isFollowed,
+      isLiked,
+      commentsHidden,
+    } = this.state;
 
     return (
       <div className={classes.root}>
@@ -136,7 +148,7 @@ export class App extends React.Component<Props, State> {
               handleLike={() => this.handleLike()}
             />
             <Comments
-              isHidden={isHidden}
+              isHidden={commentsHidden}
               list={commentList}
               handleHide={() => this.handleCommentsHide()}
             />

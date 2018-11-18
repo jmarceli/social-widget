@@ -61,7 +61,7 @@ describe('<App /> shallow', () => {
       commentList: source.commentList,
       isFollowed: false,
       isLiked: false,
-      isHidden: false,
+      commentsHidden: false,
     });
   });
   test('handleFollow() method', () => {
@@ -82,9 +82,14 @@ describe('<App /> shallow', () => {
     expect(wrapper.state('isLiked')).toBe(false);
     expect(wrapper.state('profile').likes).toBe(source.profile.likes);
   });
-
   test('handleShare() method', () => {
     wrapper.instance().handleShare();
     expect(mockAlert).toHaveBeenCalledTimes(1);
+  });
+  test('handleCommentsHide() method', () => {
+    wrapper.instance().handleCommentsHide();
+    expect(wrapper.state('commentsHidden')).toBe(true);
+    wrapper.instance().handleCommentsHide();
+    expect(wrapper.state('commentsHidden')).toBe(false);
   });
 });
