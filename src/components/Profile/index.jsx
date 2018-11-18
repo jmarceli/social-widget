@@ -244,7 +244,7 @@ export const Profile = ({
         </div>
       </div>
 
-      <button className={classes.btnShare} onClick={handleShare}>
+      <button className={classes.btnShare} onClick={handleShare} title="Share">
         <FontAwesomeIcon icon={ShareIcon} />
       </button>
 
