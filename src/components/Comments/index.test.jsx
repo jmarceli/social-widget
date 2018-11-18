@@ -1,5 +1,5 @@
 import React from 'react';
-import Comments from './index';
+import CommentsStyled, { Comments } from './index';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { shallow, render } from 'enzyme';
@@ -17,7 +17,7 @@ describe('<Comments />', () => {
   test('rendering', () => {
     const wrapper = render(
       <ThemeProvider theme={theme}>
-        <Comments {...data} />
+        <CommentsStyled {...data} />
       </ThemeProvider>,
     );
     expect(wrapper.text()).toContain('Hide comments (3)');
@@ -27,7 +27,7 @@ describe('<Comments />', () => {
 describe('<Comments /> shallow', () => {
   let wrapper;
   beforeAll(() => {
-    wrapper = shallow(<Comments {...data} />);
+    wrapper = shallow(<Comments classes={{}} {...data} />);
   });
   test('<CommentList/> subcomponents', () => {
     const commentList = wrapper.find(CommentList);

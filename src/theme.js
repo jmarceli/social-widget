@@ -17,6 +17,17 @@ const theme = {
   media: {
     large: `@media (min-width: ${breakpoints.minDesktop}px)`,
   },
+  shadow: {
+    standard: '0 0 4px 0 rgba(172,172,172,0.50)',
+  },
+  radius: 5,
+  button: {
+    base: {
+      border: 'none',
+      outline: 'none',
+      cursor: 'pointer',
+    },
+  },
 };
 
 export default theme;
