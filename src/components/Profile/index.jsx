@@ -6,7 +6,7 @@ import { faShareSquare as ShareIcon } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as LikeIcon } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames';
 
-import Counter from '../Counter';
+import Counter from './Counter';
 import type { Theme } from '../../theme';
 
 const photoOffset = 48;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Counter from './index';
 import { render } from 'enzyme';
-import theme from '../../theme';
+import theme from '../../../theme';
 import { ThemeProvider } from 'react-jss';
 
 describe('<Counter />', () => {

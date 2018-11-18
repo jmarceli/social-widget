@@ -2,7 +2,7 @@ import React from 'react';
 import { render, shallow } from 'enzyme';
 import { ThemeProvider } from 'react-jss';
 import ProfileStyled, { Profile } from './index';
-import Counter from '../Counter';
+import Counter from './Counter';
 import theme from '../../theme';
 
 const data = {
