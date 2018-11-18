@@ -7,5 +7,13 @@
     "likes": 121,
     "following": 723,
     "followers": 4433
-  }
+  },
+  "commentList": [
+    {
+      "author": "Mike Ross",
+      "content": "Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542542781731,
+      "imgSrc": "./harvey-specter.jpg"
+    }
+  ]
 }

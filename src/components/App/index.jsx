@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
 import Profile from '../Profile';
+import Comments from '../Comments';
 import WebFont from 'webfontloader';
 import injectSheet from 'react-jss';
 
 import { loadData } from '../../dataSources';
-import type { SourceData, ProfileData } from '../../dataSources';
+import type { Comment, ProfileData } from '../../dataSources';
 import type { Theme } from '../../theme';
 
 const topPadding = 12;
@@ -42,7 +43,9 @@ type Props = {
   classes: { [string]: {} },
 };
 type State = {
+  commentList: Comment[],
   profile: ProfileData,
+  isHidden: boolean,
   isFollowed: boolean,
   isLiked: boolean,
 };
@@ -51,6 +54,8 @@ export class App extends React.Component<Props, State> {
   state = {
     isFollowed: false,
     isLiked: false,
+    isHidden: false,
+    commentList: [],
     profile: {
       imgSrc: '',
       name: '',
@@ -75,6 +80,7 @@ export class App extends React.Component<Props, State> {
     const data = await loadData('./profile.json');
     this.setState({
       profile: data.profile,
+      commentList: data.commentList,
     });
   }
 
@@ -110,9 +116,11 @@ export class App extends React.Component<Props, State> {
     });
   }
 
+  handleCommentsHide() {}
+
   render() {
     const { classes } = this.props;
-    const { profile, isFollowed, isLiked } = this.state;
+    const { profile, commentList, isFollowed, isLiked, isHidden } = this.state;
 
     return (
       <div className={classes.root}>
@@ -126,6 +134,11 @@ export class App extends React.Component<Props, State> {
               handleShare={() => this.handleShare()}
               handleFollow={() => this.handleFollow()}
               handleLike={() => this.handleLike()}
+            />
+            <Comments
+              isHidden={isHidden}
+              list={commentList}
+              handleHide={() => this.handleCommentsHide()}
             />
           </div>
         </div>

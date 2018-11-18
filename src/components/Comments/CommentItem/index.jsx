@@ -1,12 +1,8 @@
 // @flow
 import React from 'react';
+import type { Comment } from '../../../dataSources';
 
-export type Props = {
-  imgSrc: string,
-  author: string,
-  pubTimestamp: number,
-  content: string,
-};
+export type Props = Comment;
 
 const CommentItem = ({ imgSrc, author, pubTimestamp, content }: Props) => (
   <article>

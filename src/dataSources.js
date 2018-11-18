@@ -8,8 +8,15 @@ export type ProfileData = {
   likes: number,
   following: number,
 };
+export type Comment = {
+  imgSrc: string,
+  author: string,
+  pubTimestamp: number,
+  content: string,
+};
 export type SourceData = {
   profile: ProfileData,
+  commentList: Comment[],
 };
 
 // Add fetch polyfill if legacy browsers support is required

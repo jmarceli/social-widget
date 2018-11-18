@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { ThemeProvider } from 'react-jss';
 import AppStyled, { App } from './index';
 import Profile from '../Profile';
+import Comments from '../Comments';
 import theme from '../../theme';
 import { loadData } from '../../dataSources';
 jest.mock('../../dataSources');
@@ -17,6 +18,7 @@ const source = {
     following: 723,
     followers: 4433,
   },
+  commentList: [],
 };
 loadData.mockImplementation(() => source);
 
@@ -47,11 +49,19 @@ describe('<App /> shallow', () => {
     expect(profile.prop('isFollowed')).toEqual(false);
     expect(profile.prop('isLiked')).toEqual(false);
   });
+  test('<Comments /> component', () => {
+    const comments = wrapper.find(Comments);
+    expect(comments.length).toBe(1);
+    expect(comments.prop('list')).toEqual(source.commentList);
+    expect(comments.prop('isHidden')).toEqual(false);
+  });
   test('state after componentDidMount', () => {
     expect(wrapper.state()).toEqual({
       profile: source.profile,
+      commentList: source.commentList,
       isFollowed: false,
       isLiked: false,
+      isHidden: false,
     });
   });
   test('handleFollow() method', () => {
