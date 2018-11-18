@@ -25,7 +25,10 @@ const iconButton = {
 export const styles = (theme: Theme) => ({
   root: {
     paddingTop: photoOffset,
-    maxWidth: 283,
+    width: 283,
+    [theme.media.large]: {
+      width: 466,
+    },
   },
   container: {
     background: theme.color.white,
@@ -33,15 +36,29 @@ export const styles = (theme: Theme) => ({
     borderRadius: 5,
     position: 'relative',
     paddingLeft: 20,
-    paddingRight: 15,
-    paddingBottom: 17,
+    paddingRight: 20,
+    paddingBottom: 20,
+    '&:after': {
+      content: '""',
+      clear: 'both',
+      display: 'table',
+    },
+    [theme.media.large]: {
+      paddingBottom: 28,
+    },
   },
   photo: {
+    height: 70,
     marginTop: -photoOffset,
     marginBottom: 16,
     textAlign: 'center',
     display: 'inline-block',
     width: '100%',
+    [theme.media.large]: {
+      marginTop: 20,
+      textAlign: 'left',
+      width: 70,
+    },
   },
   img: {
     width: 70,
@@ -51,6 +68,13 @@ export const styles = (theme: Theme) => ({
   header: {
     textAlign: 'center',
     marginBottom: 35,
+    [theme.media.large]: {
+      display: 'inline-block',
+      textAlign: 'left',
+      marginLeft: 18,
+      verticalAlign: 'top',
+      marginTop: 38,
+    },
   },
   firstLine: {
     position: 'relative',
@@ -86,6 +110,51 @@ export const styles = (theme: Theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: 21,
+    marginLeft: -20,
+    marginRight: -20,
+    [theme.media.large]: {
+      marginBottom: 0,
+      marginRight: 0,
+      flexGrow: 1,
+    },
+  },
+  counter: {
+    position: 'relative',
+    width: '33.333%',
+    textAlign: 'center',
+    '&:first-child': {
+      textAlign: 'left',
+      '&>div': {
+        paddingLeft: 20 + 3,
+      },
+    },
+    '&:last-child': {
+      textAlign: 'right',
+      '&>div': {
+        paddingRight: 20 + 3,
+      },
+    },
+    '&:first-child:after, &:last-child:before': {
+      content: '""',
+      display: 'block',
+      backgroundColor: '#979797',
+      opacity: 0.1,
+      width: 1,
+      height: 38,
+      position: 'absolute',
+      right: 0,
+      top: '50%',
+      transform: 'translateY(-50%)',
+    },
+    '&:last-child:before': {
+      right: 'auto',
+      left: 0,
+    },
+    [theme.media.large]: {
+      '&:first-child': {
+        paddingLeft: 0,
+      },
+    },
   },
   divider: {
     backgroundColor: '#979797',
@@ -93,7 +162,12 @@ export const styles = (theme: Theme) => ({
     width: 1,
     height: 38,
   },
-  footer: {},
+  footer: {
+    [theme.media.large]: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+  },
   btnFollow: {
     ...button,
     backgroundColor: theme.color.secondary,
@@ -108,6 +182,11 @@ export const styles = (theme: Theme) => ({
     letterSpacing: '4.2px',
     lineHeight: '18px',
     fontWeight: 600,
+    [theme.media.large]: {
+      width: 134,
+      alignSelf: 'flex-end',
+      margin: '0 0 0 15px',
+    },
   },
 });
 
@@ -159,15 +238,21 @@ export const Profile = ({
         <FontAwesomeIcon icon={ShareIcon} />
       </button>
 
-      <div className={classes.counterList}>
-        <Counter label="Likes" count={likes} />
-        <div className={classes.divider} />
-        <Counter label="Following" count={following} />
-        <div className={classes.divider} />
-        <Counter label="Followers" count={followers} />
-      </div>
-
       <div className={classes.footer}>
+        <div className={classes.counterList}>
+          <Counter className={classes.counter} label="Likes" count={likes} />
+          <Counter
+            className={classes.counter}
+            label="Following"
+            count={following}
+          />
+          <Counter
+            className={classes.counter}
+            label="Followers"
+            count={followers}
+          />
+        </div>
+
         <button className={classes.btnFollow} onClick={handleFollow}>
           {isFollowed ? 'Unfollow' : 'Follow'}
         </button>

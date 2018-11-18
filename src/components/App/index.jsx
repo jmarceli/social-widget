@@ -6,14 +6,18 @@ import injectSheet from 'react-jss';
 
 import { loadData } from '../../dataSources';
 import type { ProfileData } from '../../dataSources';
+import type { Theme } from '../../theme';
 
 const topPadding = 12;
 const bgTopHeight = 95;
 
-const styles = theme => ({
+const styles = (theme: Theme) => ({
   root: {
     paddingTop: topPadding,
     width: 320,
+    [theme.media.large]: {
+      width: 500,
+    },
   },
   bgTop: {
     background: theme.color.primary,
