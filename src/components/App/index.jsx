@@ -124,6 +124,24 @@ export class App extends React.Component<Props, State> {
     });
   }
 
+  // Adds comment to commentList
+  handleAddComment(values: { [string]: string }) {
+    const { comment } = values;
+    this.setState(oldState => {
+      const commentList = [...oldState.commentList];
+      // note you are always logged in as Mike Ross
+      commentList.push({
+        author: 'Mike Ross',
+        imgSrc: './harvey-specter.jpg',
+        pubTimestamp: Date.now(),
+        content: comment,
+      });
+      return {
+        commentList,
+      };
+    });
+  }
+
   render() {
     const { classes } = this.props;
     const {
@@ -151,6 +169,7 @@ export class App extends React.Component<Props, State> {
               isHidden={commentsHidden}
               list={commentList}
               handleHide={() => this.handleCommentsHide()}
+              handleAdd={values => this.handleAddComment(values)}
             />
           </div>
         </div>

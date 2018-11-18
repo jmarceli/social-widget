@@ -25,6 +25,9 @@ loadData.mockImplementation(() => source);
 const mockAlert = jest.fn();
 window.alert = mockAlert;
 
+const dateNowMock = 1487076708000;
+let dateNowSpy;
+
 describe('<App />', () => {
   test('mounting without crash', async () => {
     const wrapper = await mount(
@@ -40,6 +43,11 @@ describe('<App /> shallow', () => {
   let wrapper;
   beforeAll(() => {
     wrapper = shallow(<App classes={{}} />);
+    dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => dateNowMock);
+  });
+
+  afterAll(() => {
+    dateNowSpy.mockRestore();
   });
 
   test('props of <Profile /> component', () => {
@@ -91,5 +99,18 @@ describe('<App /> shallow', () => {
     expect(wrapper.state('commentsHidden')).toBe(true);
     wrapper.instance().handleCommentsHide();
     expect(wrapper.state('commentsHidden')).toBe(false);
+  });
+  test('handleAddComment() method', () => {
+    const initCommentList = wrapper.state('commentList');
+    wrapper.instance().handleAddComment({ comment: 'Something' });
+    const commentList = wrapper.state('commentList');
+    expect(initCommentList.length + 1).toBe(commentList.length);
+    expect(commentList[commentList.length - 1]).toEqual({
+      author: 'Mike Ross',
+      imgSrc: './harvey-specter.jpg',
+      pubTimestamp: dateNowMock,
+      content: 'Something',
+    });
+    expect(dateNowSpy).toHaveBeenCalledTimes(1);
   });
 });
