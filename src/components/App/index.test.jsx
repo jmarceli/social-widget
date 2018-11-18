@@ -7,16 +7,18 @@ import theme from '../../theme';
 import { loadData } from '../../dataSources';
 jest.mock('../../dataSources');
 
-const profileData = {
-  imgSrc: './harvey-specter.jpg',
-  name: 'Harvey Specter',
-  city: 'New York',
-  country: 'USA',
-  likes: 121,
-  following: 723,
-  followers: 4433,
+const source = {
+  profile: {
+    imgSrc: './harvey-specter.jpg',
+    name: 'Harvey Specter',
+    city: 'New York',
+    country: 'USA',
+    likes: 121,
+    following: 723,
+    followers: 4433,
+  },
 };
-loadData.mockImplementation(() => profileData);
+loadData.mockImplementation(() => source);
 
 const mockAlert = jest.fn();
 window.alert = mockAlert;
@@ -38,16 +40,16 @@ describe('<App /> shallow', () => {
     wrapper = shallow(<App classes={{}} />);
   });
 
-  test('props of Profile component', () => {
+  test('props of <Profile /> component', () => {
     const profile = wrapper.find(Profile);
     expect(profile.length).toBe(1);
-    expect(profile.prop('data')).toEqual(profileData);
+    expect(profile.prop('data')).toEqual(source.profile);
     expect(profile.prop('isFollowed')).toEqual(false);
     expect(profile.prop('isLiked')).toEqual(false);
   });
   test('state after componentDidMount', () => {
     expect(wrapper.state()).toEqual({
-      data: profileData,
+      profile: source.profile,
       isFollowed: false,
       isLiked: false,
     });
@@ -55,18 +57,20 @@ describe('<App /> shallow', () => {
   test('handleFollow() method', () => {
     wrapper.instance().handleFollow();
     expect(wrapper.state('isFollowed')).toBe(true);
-    expect(wrapper.state('data').followers).toBe(profileData.followers + 1);
+    expect(wrapper.state('profile').followers).toBe(
+      source.profile.followers + 1,
+    );
     wrapper.instance().handleFollow();
     expect(wrapper.state('isFollowed')).toBe(false);
-    expect(wrapper.state('data').followers).toBe(profileData.followers);
+    expect(wrapper.state('profile').followers).toBe(source.profile.followers);
   });
   test('handleLike() method', () => {
     wrapper.instance().handleLike();
     expect(wrapper.state('isLiked')).toBe(true);
-    expect(wrapper.state('data').likes).toBe(profileData.likes + 1);
+    expect(wrapper.state('profile').likes).toBe(source.profile.likes + 1);
     wrapper.instance().handleLike();
     expect(wrapper.state('isLiked')).toBe(false);
-    expect(wrapper.state('data').likes).toBe(profileData.likes);
+    expect(wrapper.state('profile').likes).toBe(source.profile.likes);
   });
 
   test('handleShare() method', () => {

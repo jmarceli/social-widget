@@ -5,7 +5,7 @@ import WebFont from 'webfontloader';
 import injectSheet from 'react-jss';
 
 import { loadData } from '../../dataSources';
-import type { ProfileData } from '../../dataSources';
+import type { SourceData, ProfileData } from '../../dataSources';
 import type { Theme } from '../../theme';
 
 const topPadding = 12;
@@ -42,7 +42,7 @@ type Props = {
   classes: { [string]: {} },
 };
 type State = {
-  data: ProfileData,
+  profile: ProfileData,
   isFollowed: boolean,
   isLiked: boolean,
 };
@@ -51,7 +51,7 @@ export class App extends React.Component<Props, State> {
   state = {
     isFollowed: false,
     isLiked: false,
-    data: {
+    profile: {
       imgSrc: '',
       name: '',
       city: '',
@@ -74,7 +74,7 @@ export class App extends React.Component<Props, State> {
   async componentDidMount() {
     const data = await loadData('./profile.json');
     this.setState({
-      data,
+      profile: data.profile,
     });
   }
 
@@ -82,11 +82,11 @@ export class App extends React.Component<Props, State> {
     this.setState(oldState => {
       const alreadyFollowed = oldState.isFollowed;
       const followers = alreadyFollowed
-        ? oldState.data.followers - 1
-        : oldState.data.followers + 1;
+        ? oldState.profile.followers - 1
+        : oldState.profile.followers + 1;
 
       return {
-        data: { ...oldState.data, followers },
+        profile: { ...oldState.profile, followers },
         isFollowed: !oldState.isFollowed,
       };
     });
@@ -100,11 +100,11 @@ export class App extends React.Component<Props, State> {
     this.setState(oldState => {
       const alreadyLiked = oldState.isLiked;
       const likes = alreadyLiked
-        ? oldState.data.likes - 1
-        : oldState.data.likes + 1;
+        ? oldState.profile.likes - 1
+        : oldState.profile.likes + 1;
 
       return {
-        data: { ...oldState.data, likes },
+        profile: { ...oldState.profile, likes },
         isLiked: !oldState.isLiked,
       };
     });
@@ -112,7 +112,7 @@ export class App extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { data, isFollowed, isLiked } = this.state;
+    const { profile, isFollowed, isLiked } = this.state;
 
     return (
       <div className={classes.root}>
@@ -120,7 +120,7 @@ export class App extends React.Component<Props, State> {
           <div className={classes.bgTop} />
           <div className={classes.container}>
             <Profile
-              data={data}
+              data={profile}
               isFollowed={isFollowed}
               isLiked={isLiked}
               handleShare={() => this.handleShare()}
