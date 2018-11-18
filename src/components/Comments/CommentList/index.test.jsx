@@ -1,5 +1,5 @@
 import React from 'react';
-import CommentList from './index';
+import CommentListStyled, { CommentList } from './index';
 import CommentItem from '../CommentItem';
 import { shallow, render } from 'enzyme';
 import theme from '../../../theme';
@@ -13,7 +13,7 @@ describe('<CommentList /> rendering', () => {
   it('renders without crashing', () => {
     const wrapper = render(
       <ThemeProvider theme={theme}>
-        <CommentList list={[]} />
+        <CommentListStyled list={[]} />
       </ThemeProvider>,
     );
     expect(wrapper.text()).toContain('Be the first to write a comment');
@@ -23,7 +23,7 @@ describe('<CommentList /> rendering', () => {
 describe('<CommentList /> shallow', () => {
   let wrapper;
   beforeAll(() => {
-    wrapper = shallow(<CommentList {...data} />);
+    wrapper = shallow(<CommentList classes={{}} {...data} />);
   });
   test('<CommentItem/> components', () => {
     const comment = wrapper.find(CommentItem);
