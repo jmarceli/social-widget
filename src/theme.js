@@ -28,6 +28,13 @@ const theme = {
       cursor: 'pointer',
     },
   },
+  utils: {
+    clearFloats: {
+      content: '""',
+      display: 'table',
+      clear: 'both',
+    },
+  },
 };
 
 export default theme;
