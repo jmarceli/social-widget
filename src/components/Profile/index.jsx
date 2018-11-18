@@ -4,6 +4,7 @@ import injectSheet from 'react-jss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareSquare as ShareIcon } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as LikeIcon } from '@fortawesome/free-regular-svg-icons';
+import classNames from 'classnames';
 
 import Counter from '../Counter';
 import type { Theme } from '../../theme';
@@ -92,14 +93,15 @@ export const styles = (theme: Theme) => ({
     color: theme.color.primary,
     display: 'inline-block',
   },
-  btnLike: ({ isLiked }: { isLiked: boolean }) => ({
+  btnLike: {
     ...iconButton,
     marginTop: -7,
-    color: isLiked ? '#f00' : '#d3d3d3',
-    '&:hover': {
-      color: isLiked ? '#d3d3d3' : '#f00',
-    },
-  }),
+    color: '#d3d3d3',
+    transition: 'color 0.2s',
+  },
+  isLiked: {
+    color: '#f00',
+  },
   btnShare: {
     ...iconButton,
     top: 0,
@@ -214,6 +216,7 @@ export const Profile = ({
   handleLike,
   handleFollow,
   isFollowed,
+  isLiked,
   handleShare,
 }: Props) => (
   <section className={classes.root}>
@@ -225,7 +228,11 @@ export const Profile = ({
       <div className={classes.header}>
         <div className={classes.firstLine}>
           <h1 className={classes.name}>{name}</h1>
-          <button className={classes.btnLike} onClick={handleLike}>
+          <button
+            className={classNames(classes.btnLike, isLiked && classes.isLiked)}
+            onClick={handleLike}
+            title={isLiked ? 'Dislike' : 'Like'}
+          >
             <FontAwesomeIcon icon={LikeIcon} />
           </button>
         </div>

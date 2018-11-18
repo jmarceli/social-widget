@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, shallow } from 'enzyme';
 import { ThemeProvider } from 'react-jss';
-import ProfileStyled, { Profile, styles } from './index';
+import ProfileStyled, { Profile } from './index';
 import Counter from '../Counter';
 import theme from '../../theme';
 
@@ -50,17 +50,12 @@ describe('<Profile /> shallow', () => {
     wrapper.setProps({ isFollowed: true });
     expect(wrapper.find('.bf').text()).toBe('Unfollow');
   });
-});
-
-describe('styles', () => {
-  test('not liked', () => {
-    const style = styles(theme).btnLike({ isLiked: false });
-    expect(style.color).toEqual('#d3d3d3');
-    expect(style['&:hover'].color).toEqual('#f00');
-  });
-  test('is liked', () => {
-    const style = styles(theme).btnLike({ isLiked: true });
-    expect(style.color).toEqual('#f00');
-    expect(style['&:hover'].color).toEqual('#d3d3d3');
+  test('Like/Dislike button', () => {
+    wrapper.setProps({ classes: { btnLike: 'bl', isLiked: 'il' } });
+    expect(wrapper.find('.il').length).toBe(0);
+    expect(wrapper.find('.bl').prop('title')).toBe('Like');
+    wrapper.setProps({ isLiked: true });
+    expect(wrapper.find('.il').length).toBe(1);
+    expect(wrapper.find('.bl').prop('title')).toBe('Dislike');
   });
 });
