@@ -1,6 +1,7 @@
 import React from 'react';
 import Comments from './index';
 import CommentList from './CommentList';
+import CommentForm from './CommentForm';
 import { shallow, render } from 'enzyme';
 import theme from '../../theme';
 import { ThemeProvider } from 'react-jss';
@@ -9,6 +10,7 @@ const data = {
   isHidden: false,
   list: [{}, {}, {}],
   handleHide: jest.fn(),
+  handleAdd: jest.fn(),
 };
 
 describe('<Comments />', () => {
@@ -30,5 +32,10 @@ describe('<Comments /> shallow', () => {
   test('<CommentList/> subcomponents', () => {
     const commentList = wrapper.find(CommentList);
     expect(commentList.length).toBe(1);
+  });
+  test('<CommentForm/> component', () => {
+    const commentForm = wrapper.find(CommentForm);
+    expect(commentForm.length).toBe(1);
+    expect(commentForm.prop('handleFormSubmit')).toBe(data.handleAdd);
   });
 });
