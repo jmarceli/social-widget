@@ -11,17 +11,12 @@ import type { Theme } from '../../theme';
 
 const photoOffset = 48;
 
-const button = {
-  border: 'none',
-  outline: 'none',
-  cursor: 'pointer',
-};
-const iconButton = {
-  ...button,
+const iconButton = theme => ({
+  ...theme.button.base,
   background: 'none',
   position: 'absolute',
   padding: 10,
-};
+});
 
 export const styles = (theme: Theme) => ({
   root: {
@@ -33,8 +28,8 @@ export const styles = (theme: Theme) => ({
   },
   container: {
     background: theme.color.white,
-    boxShadow: '0 0 4px 0 rgba(172,172,172,0.50)',
-    borderRadius: 5,
+    boxShadow: theme.shadow.standard,
+    borderRadius: theme.radius,
     position: 'relative',
     paddingLeft: 20,
     paddingRight: 20,
@@ -94,7 +89,7 @@ export const styles = (theme: Theme) => ({
     display: 'inline-block',
   },
   btnLike: {
-    ...iconButton,
+    ...iconButton(theme),
     marginTop: -7,
     color: '#d3d3d3',
     transition: 'color 0.2s',
@@ -103,7 +98,7 @@ export const styles = (theme: Theme) => ({
     color: '#f00',
   },
   btnShare: {
-    ...iconButton,
+    ...iconButton(theme),
     top: 0,
     right: 0,
     color: theme.color.secondary,
@@ -171,7 +166,7 @@ export const styles = (theme: Theme) => ({
     },
   },
   btnFollow: {
-    ...button,
+    ...theme.button.base,
     backgroundColor: theme.color.secondary,
     color: theme.color.white,
     textAlign: 'center',

@@ -27,8 +27,8 @@ const styles = (theme: Theme) => ({
   },
   bgBottom: {
     background: theme.color.white,
-    boxShadow: '0 0 4px 0 rgba(172,172,172,0.50)',
-    borderRadius: 5,
+    boxShadow: theme.shadow.standard,
+    borderRadius: theme.radius,
   },
   container: {
     marginTop: -bgTopHeight - topPadding,
