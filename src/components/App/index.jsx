@@ -37,6 +37,9 @@ const styles = (theme: Theme) => ({
     width: '100%',
     display: 'inline-block',
   },
+  profileWrapper: {
+    marginBottom: 15,
+  },
 });
 
 type Props = {
@@ -157,14 +160,16 @@ export class App extends React.Component<Props, State> {
         <div className={classes.bgBottom}>
           <div className={classes.bgTop} />
           <div className={classes.container}>
-            <Profile
-              data={profile}
-              isFollowed={isFollowed}
-              isLiked={isLiked}
-              handleShare={() => this.handleShare()}
-              handleFollow={() => this.handleFollow()}
-              handleLike={() => this.handleLike()}
-            />
+            <div className={classes.profileWrapper}>
+              <Profile
+                data={profile}
+                isFollowed={isFollowed}
+                isLiked={isLiked}
+                handleShare={() => this.handleShare()}
+                handleFollow={() => this.handleFollow()}
+                handleLike={() => this.handleLike()}
+              />
+            </div>
             <Comments
               isHidden={commentsHidden}
               list={commentList}
