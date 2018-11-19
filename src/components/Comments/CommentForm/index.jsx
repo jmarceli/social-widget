@@ -30,9 +30,13 @@ const styles = (theme: Theme) => ({
     fontSize: 18,
     lineHeight: '22px',
     position: 'absolute',
+    top: 27 - 21,
+    transition: 'all 0.2s',
   },
-  labelShrink: {
-    display: 'none',
+  labelIsFocused: {
+    top: -10,
+    fontSize: 12,
+    lineHeight: '16px',
   },
   input: {
     width: '100%',
@@ -41,63 +45,74 @@ const styles = (theme: Theme) => ({
     verticalAlign: 'bottom',
     fontSize: 14,
     lineHeight: '21px',
+    color: '#444',
   },
-  btnSubmit: {
-    ...theme.button.base,
-    backgroundColor: theme.color.secondary,
-    color: theme.color.white,
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    width: '100%',
-    height: 46,
-    borderRadius: 100,
-    margin: '15px auto 0',
-    fontSize: 14,
-    letterSpacing: '4.2px',
-    lineHeight: '18px',
-    fontWeight: 600,
-    [theme.media.large]: {
-      width: 134,
-      alignSelf: 'flex-end',
-      margin: '0 0 0 15px',
-    },
-  },
+  // helpText: {
+  //   fontSize: 10,
+  //   color: theme.color.primary,
+  //   textAlign: 'right',
+  //   marginTop: 2,
+  //   height: 13,
+  //   lineHeight: '13px',
+  // },
+  // btnSubmit: {
+  //   border: 'none',
+  //   background: 'none',
+  //   padding: 0,
+  //   margin: 0,
+  //   color: 'inherit',
+  //   fontSize: 10,
+  //   outline: 'none',
+  //   fontFamily: '"Montserrat", "sans-serif"',
+  // },
 });
 
 export const CommentForm = ({ classes, handleFormSubmit }: Props) => (
   <Form
     onSubmit={handleFormSubmit}
     initialValues={{ comment: '' }}
-    render={({ handleSubmit, form, submitting, values }: any) => (
-      <form onSubmit={handleSubmit} className={classes.form}>
-        <label className={classes.field}>
-          <div
-            className={classNames(
-              classes.label,
-              values.comment && classes.labelShrink,
+    render={({ handleSubmit, submitting, form }: any) => {
+      // wrap handleSubmit() function to ensure form reset after submitting
+      const submit = values => {
+        const result = handleSubmit(values);
+        form.reset();
+        return result;
+      };
+      return (
+        <form onSubmit={submit} className={classes.form}>
+          <Field disabled={submitting} name="comment">
+            {({ input, meta, ...rest }) => (
+              <label className={classes.field}>
+                <input
+                  className={classes.input}
+                  type="text"
+                  {...input}
+                  {...rest}
+                />
+                <div
+                  className={classNames(
+                    classes.label,
+                    (input.value || meta.active) && classes.labelIsFocused,
+                  )}
+                >
+                  Add a comment
+                </div>
+              </label>
             )}
-          >
-            Add a comment
-          </div>
-          <Field
-            disabled={submitting}
-            name="comment"
-            component="input"
-            type="text"
-            className={classes.input}
-          />
-        </label>
-        {values.comment && (
-          <button
-            type="submit"
-            disabled={submitting}
-            className={classes.btnSubmit}
-          >
-            Submit
-          </button>
-        )}
-      </form>
-    )}
+          </Field>
+          {/*<div className={classes.helpText}>
+            {!values.comment && (
+              <React.Fragment>
+                Press ENTER to{' '}
+                <button className={classes.btnSubmit} type="submit">
+                  submit
+                </button>
+              </React.Fragment>
+            )}
+          </div>*/}
+        </form>
+      );
+    }}
   />
 );
 

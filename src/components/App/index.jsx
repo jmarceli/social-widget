@@ -130,6 +130,12 @@ export class App extends React.Component<Props, State> {
   // Adds comment to commentList
   handleAddComment(values: { [string]: string }) {
     const { comment } = values;
+
+    // skip if comment is empty
+    if (!comment) {
+      return;
+    }
+
     this.setState(oldState => {
       const commentList = [...oldState.commentList];
       // note you are always logged in as Mike Ross
