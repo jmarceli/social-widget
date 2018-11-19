@@ -10,10 +10,7 @@ type Props = {
 };
 
 const styles = () => ({
-  root: {
-    height: 440,
-    overflow: 'scroll',
-  },
+  root: {},
   list: {
     listStyle: 'none',
     margin: 0,

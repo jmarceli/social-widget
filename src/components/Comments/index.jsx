@@ -3,6 +3,7 @@ import React from 'react';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import injectSheet from 'react-jss';
+import { Element, animateScroll as scroll } from 'react-scroll';
 
 import type { Props as Comment } from './CommentItem';
 import type { FormHandler } from './CommentForm';
@@ -37,6 +38,11 @@ const styles = (theme: Theme) => ({
       textDecoration: 'none',
     },
   },
+  scroller: {
+    position: 'relative',
+    overflow: 'scroll',
+    height: 440,
+  },
 });
 
 export const Comments = ({
@@ -45,16 +51,38 @@ export const Comments = ({
   handleHide,
   handleAdd,
   list,
-}: Props) => (
-  <div className={classes.root}>
-    <div className={classes.header}>
-      <button className={classes.btnToggle} onClick={handleHide}>
-        Hide comments ({list.length})
-      </button>
+}: Props) => {
+  let scrollContainer = React.createRef();
+
+  // scroll comments after form submission
+  const submitAndScroll = values => {
+    const result = handleAdd(values);
+    if (scrollContainer.current && scrollContainer.current.childBindings) {
+      const container = scrollContainer.current.childBindings.domNode;
+
+      scroll.scrollToBottom({
+        container,
+        duration: 800,
+        delay: 0,
+        smooth: 'easeInOutQuart',
+      });
+    }
+    return result;
+  };
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.header}>
+        <button className={classes.btnToggle} onClick={handleHide}>
+          Hide comments ({list.length})
+        </button>
+      </div>
+      <Element className={classes.scroller} ref={scrollContainer}>
+        {!isHidden && <CommentList list={list} />}
+      </Element>
+      <CommentForm handleFormSubmit={submitAndScroll} />
     </div>
-    {!isHidden && <CommentList list={list} />}
-    <CommentForm handleFormSubmit={handleAdd} />
-  </div>
-);
+  );
+};
 
 export default injectSheet(styles)(Comments);

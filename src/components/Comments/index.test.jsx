@@ -36,6 +36,5 @@ describe('<Comments /> shallow', () => {
   test('<CommentForm/> component', () => {
     const commentForm = wrapper.find(CommentForm);
     expect(commentForm.length).toBe(1);
-    expect(commentForm.prop('handleFormSubmit')).toBe(data.handleAdd);
   });
 });
