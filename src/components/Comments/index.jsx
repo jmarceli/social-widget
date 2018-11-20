@@ -57,10 +57,10 @@ const styles = (theme: Theme) => ({
     // space for shrinking input label
     // total_height - toggle_btn_height (2*25+18)
     height: 591 - 68 + 10,
-    marginBottom: -62.5 - 10,
+    marginBottom: -62.5 - 10 - theme.padding.base,
     [theme.media.large]: {
       height: 667 - 68,
-      marginBottom: -103,
+      marginBottom: -103 - theme.padding.base,
     },
   },
   scrollerWrapper: {

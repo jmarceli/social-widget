@@ -35,6 +35,9 @@ const theme = {
       clear: 'both',
     },
   },
+  padding: {
+    base: 17,
+  },
 };
 
 export default theme;

@@ -29,11 +29,12 @@ const styles = (theme: Theme) => ({
     background: theme.color.white,
     boxShadow: theme.shadow.standard,
     borderRadius: theme.radius,
+    paddingBottom: theme.padding.base,
   },
   container: {
     marginTop: -bgTopHeight - topPadding,
     background: 'none',
-    marginLeft: 17,
+    marginLeft: theme.padding.base,
     width: '100%',
     display: 'inline-block',
   },
