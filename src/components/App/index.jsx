@@ -34,7 +34,7 @@ const styles = (theme: Theme) => ({
   container: {
     marginTop: -bgTopHeight - topPadding,
     background: 'none',
-    marginLeft: theme.padding.base,
+    paddingLeft: theme.padding.base,
     width: '100%',
     display: 'inline-block',
   },
@@ -52,10 +52,14 @@ type State = {
   commentsHidden: boolean,
   isFollowed: boolean,
   isLiked: boolean,
+  isLoadingFont: boolean,
+  isLoadingData: boolean,
 };
 
 export class App extends React.Component<Props, State> {
   state = {
+    isLoadingData: true,
+    isLoadingFont: true,
     isFollowed: false,
     isLiked: false,
     commentsHidden: false,
@@ -77,12 +81,18 @@ export class App extends React.Component<Props, State> {
       google: {
         families: ['Montserrat:400,600', 'sans-serif'],
       },
+      fontactive: () => {
+        this.setState({
+          isLoadingFont: false,
+        });
+      },
     });
   }
 
   async componentDidMount() {
     const data = await loadData('./profile.json');
     this.setState({
+      isLoadingData: false,
       profile: data.profile,
       commentList: data.commentList,
     });
@@ -159,6 +169,8 @@ export class App extends React.Component<Props, State> {
       commentList,
       isFollowed,
       isLiked,
+      isLoadingFont,
+      isLoadingData,
       commentsHidden,
     } = this.state;
 
@@ -169,6 +181,7 @@ export class App extends React.Component<Props, State> {
           <div className={classes.container}>
             <div className={classes.profileWrapper}>
               <Profile
+                isLoading={isLoadingFont || isLoadingData}
                 data={profile}
                 isFollowed={isFollowed}
                 isLiked={isLiked}
@@ -178,6 +191,7 @@ export class App extends React.Component<Props, State> {
               />
             </div>
             <Comments
+              isLoading={isLoadingFont || isLoadingData}
               isHidden={commentsHidden}
               list={commentList}
               handleHide={() => this.handleCommentsHide()}

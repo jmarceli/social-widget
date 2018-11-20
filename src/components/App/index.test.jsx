@@ -35,7 +35,7 @@ describe('<App />', () => {
         <AppStyled classes={{}} />
       </ThemeProvider>,
     );
-    expect(wrapper.text()).toContain('Harvey Specter');
+    expect(wrapper.find('svg').length).toBe(20);
   });
 });
 
@@ -69,6 +69,8 @@ describe('<App /> shallow', () => {
       commentList: source.commentList,
       isFollowed: false,
       isLiked: false,
+      isLoadingData: false,
+      isLoadingFont: true,
       commentsHidden: false,
     });
   });
