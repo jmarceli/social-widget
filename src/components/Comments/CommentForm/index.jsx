@@ -11,16 +11,16 @@ export type Props = {
   classes: { [string]: string },
 };
 
+const topPadding = 14;
 const styles = (theme: Theme) => ({
   form: {
-    padding: '13.5px 34px 20px 27px',
+    padding: `${topPadding}px 34px 20px 27px`,
     boxSizing: 'border-box',
-    marginTop: 13,
   },
   field: {
     position: 'relative',
-    height: 27,
-    lineHeight: '27px',
+    height: 22,
+    lineHeight: '22px',
     width: '100%',
     borderBottom: '2px solid #dbe0e8',
     display: 'block',
@@ -30,13 +30,13 @@ const styles = (theme: Theme) => ({
     fontSize: 18,
     lineHeight: '22px',
     position: 'absolute',
-    top: 27 - 21,
+    top: 0,
     transition: 'all 0.2s',
   },
   labelIsFocused: {
-    top: -10,
+    top: -topPadding,
     fontSize: 12,
-    lineHeight: '16px',
+    lineHeight: `${topPadding}px`,
   },
   input: {
     width: '100%',
