@@ -14,7 +14,9 @@ export type Props = {
 const topPadding = 14;
 const styles = (theme: Theme) => ({
   form: {
-    padding: `${topPadding}px 34px 20px 27px`,
+    // 10 is an arbitrary value which gives some
+    // space for shrinking input label
+    padding: `${topPadding + 10}px 34px 13px 27px`,
     boxSizing: 'border-box',
   },
   field: {

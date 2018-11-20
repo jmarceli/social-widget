@@ -47,8 +47,11 @@ const styles = (theme: Theme) => ({
     height: 0,
   },
   commentsPanelIn: {
+    // 10 is an arbitrary value which gives some
+    // space for shrinking input label
     // total_height - toggle_btn_height (2*25+18)
-    height: 591 - 68,
+    height: 591 - 68 + 10,
+    marginBottom: -62.5 - 10,
   },
   scrollerWrapper: {
     // based on design
@@ -91,7 +94,7 @@ export const Comments = ({
     <div className={classes.root}>
       <div className={classes.header}>
         <button className={classes.btnToggle} onClick={handleHide}>
-          Hide comments ({list.length})
+          {isHidden ? 'Show' : 'Hide'} comments ({list.length})
         </button>
       </div>
 
