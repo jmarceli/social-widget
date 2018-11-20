@@ -73,6 +73,7 @@ const styles = (theme: Theme) => ({
     fontSize: 'inherit',
     lineHeight: '21px',
     color: '#444',
+    wordBreak: 'break-word',
   },
   date: {
     fontSize: 14,
