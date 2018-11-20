@@ -7,6 +7,7 @@ import type { Props as Comment } from '../CommentItem';
 type Props = {
   classes: { [string]: string },
   list: Comment[],
+  isLoading: boolean,
 };
 
 const styles = () => ({
@@ -18,18 +19,30 @@ const styles = () => ({
   },
 });
 
-export const CommentList = ({ classes, list }: Props) => (
+export const CommentList = ({ classes, list, isLoading }: Props) => (
   <div className={classes.root}>
-    {list.length === 0 ? (
-      <div>Be the first to write a comment!</div>
-    ) : (
+    {isLoading ? (
       <ul className={classes.list}>
-        {list.map((item: Comment, index: number) => (
-          <li key={index}>
-            <CommentItem {...item} />
+        {[1, 2, 3].map((item: number) => (
+          <li key={item}>
+            <CommentItem isLoading={true} />
           </li>
         ))}
       </ul>
+    ) : (
+      <React.Fragment>
+        {list.length === 0 ? (
+          <div>Be the first to write a comment!</div>
+        ) : (
+          <ul className={classes.list}>
+            {list.map((item: Comment, index: number) => (
+              <li key={index}>
+                <CommentItem {...item} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </React.Fragment>
     )}
   </div>
 );

@@ -6,6 +6,7 @@ import injectSheet from 'react-jss';
 import { Element, animateScroll as scroll } from 'react-scroll';
 import Transition from 'react-transition-group/Transition';
 import classNames from 'classnames';
+import ContentLoader from 'react-content-loader';
 
 import type { Props as Comment } from './CommentItem';
 import type { FormHandler } from './CommentForm';
@@ -14,6 +15,7 @@ import type { Theme } from '../../theme';
 type Props = {
   classes: { [string]: string },
   isHidden: boolean,
+  isLoading: boolean,
   list: Comment[],
   handleHide: () => void,
   handleAdd: FormHandler,
@@ -88,6 +90,7 @@ export const Comments = ({
   handleHide,
   handleAdd,
   list,
+  isLoading,
 }: Props) => {
   let scrollContainer = React.createRef();
 
@@ -111,7 +114,13 @@ export const Comments = ({
     <div className={classes.root}>
       <div className={classes.header}>
         <button className={classes.btnToggle} onClick={handleHide}>
-          {isHidden ? 'Show' : 'Hide'} comments ({list.length})
+          {isLoading ? (
+            <ContentLoader width={150} height={18} style={{ width: 150 }}>
+              <rect x="0" y="0" rx="5" ry="5" width="150" height="18" />
+            </ContentLoader>
+          ) : (
+            `${isHidden ? 'Show' : 'Hide'} comments (${list.length})`
+          )}
         </button>
       </div>
 
@@ -131,10 +140,13 @@ export const Comments = ({
             <React.Fragment>
               <div className={classes.scrollerWrapper}>
                 <Element className={classes.scroller} ref={scrollContainer}>
-                  <CommentList list={list} />
+                  <CommentList list={list} isLoading={isLoading} />
                 </Element>
               </div>
-              <CommentForm handleFormSubmit={submitAndScroll} />
+              <CommentForm
+                handleFormSubmit={submitAndScroll}
+                isLoading={isLoading}
+              />
             </React.Fragment>
           )}
         </Transition>

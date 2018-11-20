@@ -3,12 +3,14 @@ import React from 'react';
 import { Form, Field } from 'react-final-form';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
+import ContentLoader from 'react-content-loader';
 
 import type { Theme } from '../../../theme';
 export type FormHandler = (values: { [string]: string }) => void;
 export type Props = {
   handleFormSubmit: FormHandler,
   classes: { [string]: string },
+  isLoading: boolean,
 };
 
 const topPadding = 14;
@@ -72,7 +74,11 @@ const styles = (theme: Theme) => ({
   // },
 });
 
-export const CommentForm = ({ classes, handleFormSubmit }: Props) => (
+export const CommentForm = ({
+  classes,
+  handleFormSubmit,
+  isLoading,
+}: Props) => (
   <Form
     onSubmit={handleFormSubmit}
     initialValues={{ comment: '' }}
@@ -100,7 +106,17 @@ export const CommentForm = ({ classes, handleFormSubmit }: Props) => (
                     (input.value || meta.active) && classes.labelIsFocused,
                   )}
                 >
-                  Add a comment
+                  {isLoading ? (
+                    <ContentLoader
+                      width={150}
+                      height={18}
+                      style={{ width: 150 }}
+                    >
+                      <rect x="0" y="0" rx="5" ry="5" width="150" height="18" />
+                    </ContentLoader>
+                  ) : (
+                    'Add a comment'
+                  )}
                 </div>
               </label>
             )}

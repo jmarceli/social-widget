@@ -2,12 +2,14 @@
 import React from 'react';
 import injectSheet from 'react-jss';
 import moment from 'moment';
+import ContentLoader from 'react-content-loader';
 
 import type { Theme } from '../../../theme';
 import type { Comment } from '../../../dataSources';
 export type Props = {
   ...Comment,
   classes: { [string]: string },
+  isLoading: boolean,
 };
 
 moment.updateLocale('en', {
@@ -97,15 +99,41 @@ export const CommentItem = ({
   author,
   pubTimestamp,
   content,
+  isLoading,
 }: Props) => (
   <article className={classes.root}>
     <div className={classes.container}>
       <div className={classes.photo}>
-        <img className={classes.image} src={imgSrc} alt={author} />
+        {isLoading ? (
+          <ContentLoader width={40} height={40} className={classes.image}>
+            <circle cx="20" cy="20" r="20" />
+          </ContentLoader>
+        ) : (
+          <img className={classes.image} src={imgSrc} alt={author} />
+        )}
       </div>
       <div className={classes.body}>
-        <h2 className={classes.name}>{author}</h2>
-        <p className={classes.content}>{content}</p>
+        <h2 className={classes.name}>
+          {isLoading ? (
+            <ContentLoader width={70} height={18} style={{ height: 18 }}>
+              <rect x="0" y="0" rx="5" ry="5" width="70" height="18" />
+            </ContentLoader>
+          ) : (
+            author
+          )}
+        </h2>
+        <p className={classes.content}>
+          {isLoading ? (
+            <ContentLoader width={278} height={140} style={{ width: '100%' }}>
+              <rect x="0" y="0" rx="5" ry="5" width="100%" height="14" />
+              <rect x="0" y="21" rx="5" ry="5" width="100%" height="14" />
+              <rect x="0" y="42" rx="5" ry="5" width="100%" height="14" />
+              <rect x="0" y="63" rx="5" ry="5" width="100%" height="14" />
+            </ContentLoader>
+          ) : (
+            content
+          )}
+        </p>
       </div>
       <div className={classes.date}>
         <time
