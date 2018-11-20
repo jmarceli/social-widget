@@ -10,12 +10,17 @@ type Props = {
   isLoading: boolean,
 };
 
-const styles = () => ({
+const styles = theme => ({
   root: {},
   list: {
     listStyle: 'none',
     margin: 0,
     padding: 0,
+  },
+  firstComment: {
+    padding: '40px 20px',
+    color: theme.color.primary,
+    textAlign: 'center',
   },
 });
 
@@ -31,8 +36,10 @@ export const CommentList = ({ classes, list, isLoading }: Props) => (
       </ul>
     ) : (
       <React.Fragment>
-        {list.length === 0 ? (
-          <div>Be the first to write a comment!</div>
+        {list.length < 1 ? (
+          <div className={classes.firstComment}>
+            Be the first to write a comment!
+          </div>
         ) : (
           <ul className={classes.list}>
             {list.map((item: Comment, index: number) => (

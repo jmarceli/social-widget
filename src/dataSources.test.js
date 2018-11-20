@@ -21,9 +21,9 @@ describe('loadData()', () => {
     const result = await loadData('./profile.json');
     expect(result).toEqual(mockData);
     expect(result.commentList).toEqual([
-      { pubTimestamp: 12 },
-      { pubTimestamp: 123 },
       { pubTimestamp: 456 },
+      { pubTimestamp: 123 },
+      { pubTimestamp: 12 },
     ]);
     expect(mockFetch).toHaveBeenCalledWith('./profile.json');
   });
