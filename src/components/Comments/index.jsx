@@ -4,6 +4,8 @@ import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import injectSheet from 'react-jss';
 import { Element, animateScroll as scroll } from 'react-scroll';
+import Transition from 'react-transition-group/Transition';
+import classNames from 'classnames';
 
 import type { Props as Comment } from './CommentItem';
 import type { FormHandler } from './CommentForm';
@@ -17,6 +19,7 @@ type Props = {
   handleAdd: FormHandler,
 };
 
+const animationTimeout = 500; // in ms
 const styles = (theme: Theme) => ({
   root: {
     boxShadow: theme.shadow.standard,
@@ -37,6 +40,20 @@ const styles = (theme: Theme) => ({
     '&:hover': {
       textDecoration: 'none',
     },
+  },
+  commentsPanel: {
+    overflow: 'hidden',
+    transition: `all ${animationTimeout / 1000}s`,
+    height: 0,
+  },
+  commentsPanelIn: {
+    // total_height - toggle_btn_height (2*25+18)
+    height: 591 - 68,
+  },
+  scrollerWrapper: {
+    // based on design
+    paddingBottom: 13,
+    paddingTop: 12,
   },
   scroller: {
     position: 'relative',
@@ -77,10 +94,31 @@ export const Comments = ({
           Hide comments ({list.length})
         </button>
       </div>
-      <Element className={classes.scroller} ref={scrollContainer}>
-        {!isHidden && <CommentList list={list} />}
-      </Element>
-      <CommentForm handleFormSubmit={submitAndScroll} />
+
+      <div
+        className={classNames(
+          classes.commentsPanel,
+          !isHidden && classes.commentsPanelIn,
+        )}
+      >
+        <Transition
+          in={!isHidden}
+          timeout={animationTimeout}
+          unmountOnExit
+          mountOnEnter
+        >
+          {() => (
+            <React.Fragment>
+              <div className={classes.scrollerWrapper}>
+                <Element className={classes.scroller} ref={scrollContainer}>
+                  <CommentList list={list} />
+                </Element>
+              </div>
+              <CommentForm handleFormSubmit={submitAndScroll} />
+            </React.Fragment>
+          )}
+        </Transition>
+      </div>
     </div>
   );
 };

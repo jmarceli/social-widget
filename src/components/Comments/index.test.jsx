@@ -5,6 +5,7 @@ import CommentForm from './CommentForm';
 import { shallow, render } from 'enzyme';
 import theme from '../../theme';
 import { ThemeProvider } from 'react-jss';
+import Transition from 'react-transition-group/Transition';
 
 const data = {
   isHidden: false,
@@ -29,12 +30,15 @@ describe('<Comments /> shallow', () => {
   beforeAll(() => {
     wrapper = shallow(<Comments classes={{}} {...data} />);
   });
-  test('<CommentList/> subcomponents', () => {
-    const commentList = wrapper.find(CommentList);
-    expect(commentList.length).toBe(1);
+  test('toggle button existence', () => {
+    const button = wrapper.find('button');
+    expect(button.length).toBe(1);
   });
-  test('<CommentForm/> component', () => {
-    const commentForm = wrapper.find(CommentForm);
-    expect(commentForm.length).toBe(1);
+  test('<CommentForm/> and <CommentList/> shows after toggle', () => {
+    const button = wrapper.find('button');
+    button.simulate('click');
+    const transition = wrapper.find(Transition).dive();
+    expect(transition.find('Jss(CommentForm)').length).toBe(1);
+    expect(transition.find('Jss(CommentList)').length).toBe(1);
   });
 });
