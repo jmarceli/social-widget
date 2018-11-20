@@ -75,7 +75,7 @@ const styles = (theme: Theme) => ({
     color: '#444',
   },
   date: {
-    fontSize: 'inherit',
+    fontSize: 14,
     opacity: 0.5,
     color: theme.color.primary,
     position: 'absolute',
