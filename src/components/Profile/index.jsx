@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareSquare as ShareIcon } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as LikeIcon } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames';
+import ContentLoader from 'react-content-loader';
 
 import Counter from './Counter';
 import type { Theme } from '../../theme';
@@ -57,9 +58,11 @@ export const styles = (theme: Theme) => ({
     },
   },
   img: {
+    background: theme.color.white,
     width: 70,
     height: 70,
     borderRadius: '50%',
+    display: 'inline-block',
   },
   header: {
     textAlign: 'center',
@@ -206,6 +209,7 @@ type Props = {
   isFollowed: boolean,
   isLiked: boolean,
   handleShare: () => void,
+  isLoading: boolean,
 };
 
 export const Profile = ({
@@ -216,57 +220,106 @@ export const Profile = ({
   isFollowed,
   isLiked,
   handleShare,
+  isLoading,
 }: Props) => (
   <section className={classes.root}>
     <div className={classes.container}>
       <div className={classes.photo}>
-        <img className={classes.img} src={imgSrc} alt={name} />
+        {isLoading ? (
+          <ContentLoader width={40} height={40} className={classes.img}>
+            <rect x="0" y="0" rx="5" ry="5" width="40" height="40" />
+          </ContentLoader>
+        ) : imgSrc ? (
+          <img className={classes.img} src={imgSrc} alt={name} />
+        ) : (
+          <div className={classes.img} />
+        )}
       </div>
 
       <div className={classes.header}>
-        <div className={classes.firstLine}>
-          <h1 className={classes.name}>{name}</h1>
-          <button
-            className={classNames(classes.btnLike, isLiked && classes.isLiked)}
-            onClick={handleLike}
-            title={isLiked ? 'Dislike' : 'Like'}
+        {isLoading ? (
+          <ContentLoader
+            width={134}
+            height={37}
+            style={{ display: 'inline-block', width: 134 }}
           >
-            <FontAwesomeIcon icon={LikeIcon} />
-          </button>
-        </div>
-        <div className={classes.secondLine}>
-          {city}, {country}
-        </div>
+            <rect x="0" y="0" rx="5" ry="5" width="134" height="20" />
+            <rect x="23" y="26" rx="5" ry="5" width="88" height="13" />
+          </ContentLoader>
+        ) : (
+          <React.Fragment>
+            <div className={classes.firstLine}>
+              <h1 className={classes.name}>{name}</h1>
+              <button
+                className={classNames(
+                  classes.btnLike,
+                  isLiked && classes.isLiked,
+                )}
+                onClick={handleLike}
+                title={isLiked ? 'Dislike' : 'Like'}
+              >
+                <FontAwesomeIcon icon={LikeIcon} />
+              </button>
+            </div>
+            <div className={classes.secondLine}>
+              {city}, {country}
+            </div>
+          </React.Fragment>
+        )}
       </div>
 
-      <button className={classes.btnShare} onClick={handleShare} title="Share">
-        <FontAwesomeIcon icon={ShareIcon} />
-      </button>
+      {!isLoading && (
+        <button
+          className={classes.btnShare}
+          onClick={handleShare}
+          title="Share"
+        >
+          <FontAwesomeIcon icon={ShareIcon} />
+        </button>
+      )}
 
       <div className={classes.footer}>
         <div className={classes.counterList}>
-          <Counter className={classes.counter} label="Likes" count={likes} />
+          <Counter
+            className={classes.counter}
+            label="Likes"
+            count={likes}
+            isLoading={isLoading}
+          />
           <Counter
             className={classes.counter}
             label="Following"
             count={following}
+            isLoading={isLoading}
           />
           <Counter
             className={classes.counter}
             label="Followers"
             count={followers}
+            isLoading={isLoading}
           />
         </div>
 
-        <button
-          className={classNames(
-            classes.btnFollow,
-            isFollowed && classes.isFollowed,
-          )}
-          onClick={handleFollow}
-        >
-          {isFollowed ? 'Unfollow' : 'Follow'}
-        </button>
+        {isLoading ? (
+          <ContentLoader
+            width={134}
+            height={46}
+            className={classes.btnFollow}
+            style={{ background: 'none' }}
+          >
+            <rect x="0" y="0" rx="5" ry="5" width="134" height="46" />
+          </ContentLoader>
+        ) : (
+          <button
+            className={classNames(
+              classes.btnFollow,
+              isFollowed && classes.isFollowed,
+            )}
+            onClick={handleFollow}
+          >
+            {isFollowed ? 'Unfollow' : 'Follow'}
+          </button>
+        )}
       </div>
     </div>
   </section>
