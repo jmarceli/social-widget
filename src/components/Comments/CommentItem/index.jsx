@@ -59,6 +59,9 @@ const styles = (theme: Theme) => ({
     float: 'left',
     width: `calc(100% - ${imageSize}px)`,
     boxSizing: 'border-box',
+    [theme.media.large]: {
+      paddingRight: 27 + 15,
+    },
   },
   name: {
     margin: 0,
@@ -67,6 +70,9 @@ const styles = (theme: Theme) => ({
     paddingRight: 15 + 21,
     fontSize: 'inherit',
     fontWeight: 400,
+    [theme.media.large]: {
+      paddingBottom: 6,
+    },
   },
   content: {
     margin: 0,

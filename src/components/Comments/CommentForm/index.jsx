@@ -18,6 +18,9 @@ const styles = (theme: Theme) => ({
     // space for shrinking input label
     padding: `${topPadding + 10}px 34px 13px 27px`,
     boxSizing: 'border-box',
+    [theme.media.large]: {
+      padding: `42px 34px 32px 27px`,
+    },
   },
   field: {
     position: 'relative',
