@@ -2,7 +2,7 @@
 
 Usage
 
-1. Download zipped latest JS files from [releases](https://github.com/jmarceli/social-widget/releases).
+1. Download zipped latest JS files from [releases](https://github.com/jmarceli/social-widget/releases) or directly [social-widget.zip](https://github.com/jmarceli/social-widget/releases/download/v0.1.0/social-widget.zip)
 2. Unpack them in your website root directory
 3. Link files from your website with `<script></script>` tags
 4. Add HTML tag/s with approperiate data attributes to display component
