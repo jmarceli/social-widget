@@ -1,44 +1,91 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Social Widget
 
-## Available Scripts
+Usage
 
-In the project directory, you can run:
+1. Download zipped latest JS files from [releases](https://github.com/jmarceli/social-widget/releases).
+2. Unpack them in your website root directory
+3. Link files from your website with `<script></script>` tags
+4. Add HTML tag/s with approperiate data attributes to display component
 
-### `npm start`
+Minimal usage example:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```html
+<html>
+  <body>
+    <div data-root data-url="./profile.json"></div>
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+    <script src="./static/js/1.6609d883.chunk.js"></script>
+    <script src="./static/js/runtime~main.4a686d48.js"></script>
+    <script src="./static/js/main.d3c350a7.chunk.js"></script>
+  </body>
+</html>
+```
 
-### `npm test`
+Where:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- `data-root` - indicates element which will be used to mount component
+- `data-url` - JSON data source URL
 
-### `npm run build`
+JSON data example:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```json
+{
+  "profile": {
+    "imgSrc": "./harvey-specter.jpg",
+    "name": "Harvey Specter",
+    "city": "New York",
+    "country": "USA",
+    "likes": 121,
+    "following": 723,
+    "followers": 4433
+  },
+  "commentList": [
+    {
+      "author": "Mike Ross",
+      "content": "New. Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542942781731,
+      "imgSrc": "./harvey-specter.jpg"
+    },
+    {
+      "author": "Mike Ross",
+      "content": "Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542542781731,
+      "imgSrc": "./harvey-specter.jpg"
+    },
+    {
+      "author": "Mike Ross",
+      "content": "OLD. Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542411681731,
+      "imgSrc": "./harvey-specter.jpg"
+    },
+    {
+      "author": "Mike Ross",
+      "content": "Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542542781731,
+      "imgSrc": "./harvey-specter.jpg"
+    },
+    {
+      "author": "Mike Ross",
+      "content": "Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542542781731,
+      "imgSrc": "./harvey-specter.jpg"
+    },
+    {
+      "author": "Mike Ross",
+      "content": "Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542542781731,
+      "imgSrc": "./harvey-specter.jpg"
+    },
+    {
+      "author": "Mike Ross",
+      "content": "Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542542781731,
+      "imgSrc": "./harvey-specter.jpg"
+    }
+  ]
+}
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Jan Grzegorowski
