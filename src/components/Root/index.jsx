@@ -4,9 +4,9 @@ import { ThemeProvider } from 'react-jss';
 import App from '../App';
 import theme from '../../theme';
 
-const Root = () => (
+const Root = ({ url }: { url: string }) => (
   <ThemeProvider theme={theme}>
-    <App />
+    <App dataUrl={url} />
   </ThemeProvider>
 );
 

@@ -45,6 +45,7 @@ const styles = (theme: Theme) => ({
 
 type Props = {
   classes: { [string]: {} },
+  dataUrl: string,
 };
 type State = {
   commentList: Comment[],
@@ -90,7 +91,7 @@ export class App extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const data = await loadData('./profile.json');
+    const data = await loadData(this.props.dataUrl);
     this.setState({
       isLoadingData: false,
       profile: data.profile,
