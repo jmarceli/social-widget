@@ -4,6 +4,7 @@ const mockData = {
   test: '123',
   commentList: [
     { pubTimestamp: 123 },
+    { pubTimestamp: 457 },
     { pubTimestamp: 456 },
     { pubTimestamp: 12 },
   ],
@@ -21,9 +22,10 @@ describe('loadData()', () => {
     const result = await loadData('./profile.json');
     expect(result).toEqual(mockData);
     expect(result.commentList).toEqual([
-      { pubTimestamp: 456 },
-      { pubTimestamp: 123 },
       { pubTimestamp: 12 },
+      { pubTimestamp: 123 },
+      { pubTimestamp: 456 },
+      { pubTimestamp: 457 },
     ]);
     expect(mockFetch).toHaveBeenCalledWith('./profile.json');
   });
