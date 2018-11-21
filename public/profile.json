@@ -11,13 +11,19 @@
   "commentList": [
     {
       "author": "Mike Ross",
+      "content": "New. Lorem ipsum dolor it amet enim. Etiam...",
+      "pubTimestamp": 1542942781731,
+      "imgSrc": "./harvey-specter.jpg"
+    },
+    {
+      "author": "Mike Ross",
       "content": "Lorem ipsum dolor it amet enim. Etiam...",
       "pubTimestamp": 1542542781731,
       "imgSrc": "./harvey-specter.jpg"
     },
     {
       "author": "Mike Ross",
-      "content": "Lorem ipsum dolor it amet enim. Etiam...",
+      "content": "OLD. Lorem ipsum dolor it amet enim. Etiam...",
       "pubTimestamp": 1542411681731,
       "imgSrc": "./harvey-specter.jpg"
     },

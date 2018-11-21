@@ -84,75 +84,103 @@ const styles = (theme: Theme) => ({
   },
 });
 
-export const Comments = ({
-  classes,
-  isHidden,
-  handleHide,
-  handleAdd,
-  list,
-  isLoading,
-}: Props) => {
-  let scrollContainer = React.createRef();
+export class Comments extends React.Component<Props> {
+  scrollContainer: any;
 
-  // scroll comments after form submission
-  const submitAndScroll = values => {
-    const result = handleAdd(values);
-    if (scrollContainer.current && scrollContainer.current.childBindings) {
-      const container = scrollContainer.current.childBindings.domNode;
-
+  constructor(props: Props) {
+    super(props);
+    this.scrollContainer = React.createRef();
+  }
+  componentDidMount() {
+    if (
+      this.scrollContainer.current &&
+      this.scrollContainer.current.childBindings
+    ) {
+      const container = this.scrollContainer.current.childBindings.domNode;
       scroll.scrollToBottom({
         container,
-        duration: 800,
+        duration: 0,
         delay: 0,
-        smooth: 'easeInOutQuart',
       });
     }
-    return result;
-  };
+  }
 
-  return (
-    <div className={classes.root}>
-      <div className={classes.header}>
-        <button className={classes.btnToggle} onClick={handleHide}>
-          {isLoading ? (
-            <ContentLoader width={150} height={18} style={{ width: 150 }}>
-              <rect x="0" y="0" rx="5" ry="5" width="150" height="18" />
-            </ContentLoader>
-          ) : (
-            `${isHidden ? 'Show' : 'Hide'} comments (${list.length})`
+  render() {
+    const {
+      classes,
+      isHidden,
+      handleHide,
+      handleAdd,
+      list,
+      isLoading,
+    } = this.props;
+
+    // scroll comments after form submission
+    const submitAndScroll = values => {
+      const result = handleAdd(values);
+      if (
+        this.scrollContainer.current &&
+        this.scrollContainer.current.childBindings
+      ) {
+        const container = this.scrollContainer.current.childBindings.domNode;
+
+        scroll.scrollToBottom({
+          container,
+          duration: 800,
+          delay: 0,
+          smooth: 'easeInOutQuart',
+        });
+      }
+      return result;
+    };
+
+    return (
+      <div className={classes.root}>
+        <div className={classes.header}>
+          <button className={classes.btnToggle} onClick={handleHide}>
+            {isLoading ? (
+              <ContentLoader width={150} height={18} style={{ width: 150 }}>
+                <rect x="0" y="0" rx="5" ry="5" width="150" height="18" />
+              </ContentLoader>
+            ) : (
+              `${isHidden ? 'Show' : 'Hide'} comments (${list.length})`
+            )}
+          </button>
+        </div>
+
+        <div
+          className={classNames(
+            classes.commentsPanel,
+            !isHidden && classes.commentsPanelIn,
           )}
-        </button>
-      </div>
-
-      <div
-        className={classNames(
-          classes.commentsPanel,
-          !isHidden && classes.commentsPanelIn,
-        )}
-      >
-        <Transition
-          in={!isHidden}
-          timeout={animationTimeout}
-          unmountOnExit
-          mountOnEnter
         >
-          {() => (
-            <React.Fragment>
-              <div className={classes.scrollerWrapper}>
-                <Element className={classes.scroller} ref={scrollContainer}>
-                  <CommentList list={list} isLoading={isLoading} />
-                </Element>
-              </div>
-              <CommentForm
-                handleFormSubmit={submitAndScroll}
-                isLoading={isLoading}
-              />
-            </React.Fragment>
-          )}
-        </Transition>
+          <Transition
+            in={!isHidden}
+            timeout={animationTimeout}
+            unmountOnExit
+            mountOnEnter
+          >
+            {() => (
+              <React.Fragment>
+                <div className={classes.scrollerWrapper}>
+                  <Element
+                    className={classes.scroller}
+                    ref={this.scrollContainer}
+                  >
+                    <CommentList list={list} isLoading={isLoading} />
+                  </Element>
+                </div>
+                <CommentForm
+                  handleFormSubmit={submitAndScroll}
+                  isLoading={isLoading}
+                />
+              </React.Fragment>
+            )}
+          </Transition>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default injectSheet(styles)(Comments);
