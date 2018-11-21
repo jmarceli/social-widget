@@ -15,9 +15,11 @@ const bgTopHeight = 95;
 const styles = (theme: Theme) => ({
   root: {
     paddingTop: topPadding,
+    paddingBottom: 80,
     width: 320,
     [theme.media.large]: {
       width: 500,
+      paddingBottom: 107,
     },
   },
   bgTop: {
