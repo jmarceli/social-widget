@@ -7,7 +7,14 @@ const breakpoints = {
   minDesktop: 500,
 };
 
+const font = {
+  fontFamily: "'Montserrat', 'sans-serif'",
+  '-webkit-font-smoothing': 'antialiased',
+  '-moz-osx-font-smoothing': 'grayscale',
+};
+
 const theme = {
+  font,
   color: {
     primary: '#002c71',
     primaryLight: '#8298b9',
@@ -23,6 +30,7 @@ const theme = {
   radius: 5,
   button: {
     base: {
+      ...font,
       border: 'none',
       outline: 'none',
       cursor: 'pointer',

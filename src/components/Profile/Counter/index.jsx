@@ -10,6 +10,7 @@ const styles = theme => ({
     minWidth: 58,
   },
   count: {
+    ...theme.font,
     fontSize: 24,
     lineHeight: '27px',
     height: 27,
@@ -17,6 +18,7 @@ const styles = theme => ({
     marginBottom: 3,
   },
   label: {
+    ...theme.font,
     fontSize: 10,
     lineHeight: '12px',
     height: 12,

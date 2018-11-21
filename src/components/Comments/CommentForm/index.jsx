@@ -33,6 +33,7 @@ const styles = (theme: Theme) => ({
     display: 'block',
   },
   label: {
+    ...theme.font,
     color: theme.color.primaryLight,
     fontSize: 18,
     lineHeight: '22px',
@@ -46,6 +47,7 @@ const styles = (theme: Theme) => ({
     lineHeight: `${topPadding}px`,
   },
   input: {
+    ...theme.font,
     width: '100%',
     border: 'none',
     outline: 'none',

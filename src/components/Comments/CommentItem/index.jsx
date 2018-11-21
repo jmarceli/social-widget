@@ -66,6 +66,7 @@ const styles = (theme: Theme) => ({
     },
   },
   name: {
+    ...theme.font,
     margin: 0,
     color: theme.color.primary,
     // space for time and some margin
@@ -77,6 +78,7 @@ const styles = (theme: Theme) => ({
     },
   },
   content: {
+    ...theme.font,
     margin: 0,
     fontSize: 'inherit',
     lineHeight: '21px',
@@ -84,6 +86,7 @@ const styles = (theme: Theme) => ({
     wordBreak: 'break-word',
   },
   date: {
+    ...theme.font,
     fontSize: 14,
     opacity: 0.5,
     color: theme.color.primary,

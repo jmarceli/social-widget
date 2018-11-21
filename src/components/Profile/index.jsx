@@ -79,11 +79,13 @@ export const styles = (theme: Theme) => ({
     position: 'relative',
   },
   secondLine: {
+    ...theme.font,
     fontSize: 12,
     lineHeight: '15px',
     color: theme.color.primaryLight,
   },
   name: {
+    ...theme.font,
     margin: 0,
     fontWeight: 400,
     fontSize: 18,
