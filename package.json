@@ -25,6 +25,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "pack": "webpack --config webpack.config.js",
+    "dist": "yarn build && yarn pack",
+    "docs": "cp dist/social-widget.min.js docs",
     "test": "CI=true react-scripts test",
     "test:watch": "react-scripts test --notify",
     "lint": "eslint src",
@@ -55,7 +58,8 @@
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.86.0",
     "flow-typed": "^2.5.1",
-    "husky": "^1.1.4"
+    "husky": "^1.1.4",
+    "webpack-cli": "^3.1.2"
   },
   "husky": {
     "hooks": {
