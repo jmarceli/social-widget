@@ -1,24 +1,26 @@
 # Social Widget
 
-Usage
+## Installation
 
-1. Download zipped latest JS files from [releases](https://github.com/jmarceli/social-widget/releases) or directly [social-widget.zip](https://github.com/jmarceli/social-widget/releases/download/v0.1.0/social-widget.zip)
-2. Unpack them in your website root directory
-3. Link files from your website with `<script></script>` tags
-4. Add HTML tag/s with approperiate data attributes to display component
+1. Download latest JS file from [releases](https://github.com/jmarceli/social-widget/releases) or directly [social-widget.min.js](https://github.com/jmarceli/social-widget/releases/download/v0.1.1/social-widget.min.js)
+2. Place it in your website root directory and link with `<script...></script>` tags
 
-Minimal usage example:
+OR
+
+1. Link it directly from Github (not recommended) with: `<script src="https://github.com/jmarceli/social-widget/releases/download/v0.1.1/social-widget.min.js"></script>`
+
+## Example
+
+Check project Github Pages for usage example:
+
+https://jmarceli.github.io/social-widget/
+
+## Documentation
+
+There is only a single HTML tag required to display this social widget.
 
 ```html
-<html>
-  <body>
-    <div data-root data-url="./profile.json"></div>
-
-    <script src="./static/js/1.6609d883.chunk.js"></script>
-    <script src="./static/js/runtime~main.4a686d48.js"></script>
-    <script src="./static/js/main.d3c350a7.chunk.js"></script>
-  </body>
-</html>
+<div data-root data-url="./harvey.json"></div>
 ```
 
 Where:
@@ -26,7 +28,7 @@ Where:
 - `data-root` - indicates element which will be used to mount component
 - `data-url` - JSON data source URL
 
-JSON data example:
+JSON data source example:
 
 ```json
 {
@@ -85,6 +87,35 @@ JSON data example:
   ]
 }
 ```
+
+Where:
+
+- `profile` - is a profile data section
+- `profile.imgSrc` - person image in profile section (absolute or relative URL to image)
+- `profile.name` - person name
+- `profile.city` - location info
+- `profile.country` - location info
+- `profile.likes` - number of likes
+- `profile.following` - number of followed people
+- `profile.followers` - number of followers (incremented with FOLLOW button)
+- `commentList[]` - array with comment objects
+- `commentList[].author` - comment author name and surname
+- `commentList[].content` - comment content
+- `commentList[].pubTimestamp` - comment publication timestamp
+- `commentList[].imgSrc` - comment author image
+
+## Known bugs
+
+- empty `commentList` info message doesn't have correct font-family
+- empty `commentList[].imgSrc` is not supported
+
+## TODO
+
+- persistance support (e.g. LocalStorage)
+- cross-browser compatibility test (e.g. with BrowserStack)
+- "load more" button for comments on comments list
+- JSON values validation
+- unwanted padding after closing comments list
 
 ---
 
