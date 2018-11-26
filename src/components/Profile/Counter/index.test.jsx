@@ -1,17 +1,21 @@
 import React from 'react';
 import Counter from './index';
-import { render } from 'enzyme';
-import theme from '../../../theme';
-import { ThemeProvider } from 'react-jss';
+import { render } from 'test-utils';
 
 describe('<Counter />', () => {
-  it('renders without crashing', () => {
-    const wrapper = render(
-      <ThemeProvider theme={theme}>
-        <Counter count={3} label="Something" />
-      </ThemeProvider>,
+  test('isLoading=true', () => {
+    const { baseElement, queryByText } = render(
+      <Counter isLoading={true} count={3} label="Something" />,
     );
-    expect(wrapper.text()).toContain('3');
-    expect(wrapper.text()).toContain('Something');
+    expect(queryByText('3')).toBeNull();
+    expect(queryByText('Something')).toBeNull();
+    expect(baseElement.getElementsByTagName('svg').length).toBe(2);
+  });
+  test('isLoading=false', () => {
+    const { getByText } = render(
+      <Counter isLoading={false} count={3} label="Something" />,
+    );
+    expect(getByText('3')).toBeDefined();
+    expect(getByText('Something')).toBeDefined();
   });
 });
