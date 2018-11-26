@@ -116,6 +116,8 @@ Where:
 - "load more" button for comments on comments list
 - JSON values validation
 - unwanted padding after closing comments list
+- use Pure.Components to optimize comments performance
+- compare "traditional" state with Redux and ApolloGraphQL managers
 
 ---
 
