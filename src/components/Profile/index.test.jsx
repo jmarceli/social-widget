@@ -1,9 +1,8 @@
 import React from 'react';
-import { render, shallow } from 'enzyme';
-import { ThemeProvider } from 'react-jss';
-import ProfileStyled, { Profile } from './index';
+import { render, fireEvent } from 'test-utils';
+import Profile from './index';
 import Counter from './Counter';
-import theme from '../../theme';
+jest.mock('./Counter', () => jest.fn(() => <div />));
 
 const data = {
   imgSrc: './img.test.jpg',
@@ -15,49 +14,72 @@ const data = {
   followers: 4433,
 };
 
-describe('<Profile /> rendering', () => {
-  it('renders without crashing', () => {
-    const wrapper = render(
-      <ThemeProvider theme={theme}>
-        <ProfileStyled classes={{}} data={data} />
-      </ThemeProvider>,
+describe('<Profile />', () => {
+  test('rendering when isLoading=false', () => {
+    const { getByText, getByTitle, getByAltText } = render(
+      <Profile isLoading={false} data={data} />,
     );
-    expect(wrapper.find('h1').text()).toBe(data.name);
-    expect(wrapper.find('button').length).toBe(3);
-    expect(wrapper.find('img').attr('src')).toBe(data.imgSrc);
-    expect(wrapper.find('img').attr('alt')).toBe(data.name);
-  });
-});
-
-describe('<Profile /> shallow', () => {
-  let wrapper;
-  beforeAll(() => {
-    wrapper = shallow(
-      <Profile classes={{}} data={data} isFollowed={false} isLiked={false} />,
+    expect(Counter).toBeCalledTimes(3);
+    expect(Counter.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        label: 'Likes',
+        count: data.likes,
+        isLoading: false,
+      }),
     );
+    expect(getByText(data.name)).toBeDefined();
+    expect(getByTitle('Like')).toBeDefined();
+    expect(getByText('Follow')).toBeDefined();
+    const img = getByAltText(data.name);
+    expect(img).toBeDefined();
+    expect(img.src).toContain(data.imgSrc.substr(1));
   });
-  test('number of rendered Counters', () => {
-    expect(wrapper.find(Counter).length).toBe(3);
+  test('rendering when isLoading=true', () => {
+    Counter.mockClear();
+    const { baseElement, queryByText } = render(<Profile isLoading={true} />);
+    expect(Counter).toBeCalledTimes(3);
+    expect(Counter.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        label: 'Likes',
+        count: undefined,
+        isLoading: true,
+      }),
+    );
+    expect(queryByText(data.name)).toBeNull();
+    expect(queryByText(data.city)).toBeNull();
+    expect(queryByText(data.country)).toBeNull();
+    expect(queryByText('Follow')).toBeNull();
+    // loaders number: 1 (photo) + 1 (header) + 1 (follow btn)
+    expect(baseElement.getElementsByTagName('svg').length).toBe(3);
   });
-  test('first Counter props', () => {
-    const firstCounter = wrapper.find(Counter).first();
-    expect(firstCounter.prop('label')).toBe('Likes');
-    expect(firstCounter.prop('count')).toBe(data.likes);
+  test('follow button clicking', () => {
+    const handleFollow = jest.fn();
+    const { getByText, rerender } = render(
+      <Profile isLoading={false} data={data} handleFollow={handleFollow} />,
+    );
+    fireEvent.click(getByText('Follow'));
+    expect(handleFollow).toBeCalledTimes(1);
+    rerender(<Profile isFollowed={true} handleFollow={handleFollow} />);
+    fireEvent.click(getByText('Unfollow'));
+    expect(handleFollow).toBeCalledTimes(2);
   });
-  test('Follow/Unfollow button', () => {
-    wrapper.setProps({ classes: { btnFollow: 'bf', isFollowed: 'if' } });
-    expect(wrapper.find('.bf').text()).toBe('Follow');
-    expect(wrapper.find('.if').length).toBe(0);
-    wrapper.setProps({ isFollowed: true });
-    expect(wrapper.find('.bf').text()).toBe('Unfollow');
-    expect(wrapper.find('.if').length).toBe(1);
+  test('like button clicking', () => {
+    const handleLike = jest.fn();
+    const { getByTitle, rerender } = render(
+      <Profile isLoading={false} data={data} handleLike={handleLike} />,
+    );
+    fireEvent.click(getByTitle('Like'));
+    expect(handleLike).toBeCalledTimes(1);
+    rerender(<Profile isLiked={true} handleLike={handleLike} />);
+    fireEvent.click(getByTitle('Dislike'));
+    expect(handleLike).toBeCalledTimes(2);
   });
-  test('Like/Dislike button', () => {
-    wrapper.setProps({ classes: { btnLike: 'bl', isLiked: 'il' } });
-    expect(wrapper.find('.il').length).toBe(0);
-    expect(wrapper.find('.bl').prop('title')).toBe('Like');
-    wrapper.setProps({ isLiked: true });
-    expect(wrapper.find('.il').length).toBe(1);
-    expect(wrapper.find('.bl').prop('title')).toBe('Dislike');
+  test('share button clicking', () => {
+    const handleShare = jest.fn();
+    const { getByTitle } = render(
+      <Profile isLoading={false} data={data} handleShare={handleShare} />,
+    );
+    fireEvent.click(getByTitle('Share'));
+    expect(handleShare).toBeCalledTimes(1);
   });
 });

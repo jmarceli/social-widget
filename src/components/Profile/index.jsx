@@ -216,7 +216,7 @@ type Props = {
 
 export const Profile = ({
   classes,
-  data: { imgSrc, name, city, country, likes, following, followers },
+  data: { imgSrc, name, city, country, likes, following, followers } = {},
   handleLike,
   handleFollow,
   isFollowed,
