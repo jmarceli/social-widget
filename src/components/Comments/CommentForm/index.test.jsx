@@ -1,33 +1,34 @@
 import React from 'react';
-import CommentFormStyled, { CommentForm } from './index';
-import { shallow, render } from 'enzyme';
-import theme from '../../../theme';
-import { ThemeProvider } from 'react-jss';
-import { Form } from 'react-final-form';
-
-const submitHandler = jest.fn();
+import CommentForm from './index';
+import { render, fireEvent } from 'test-utils';
 
 describe('<CommentForm />', () => {
-  it('renders without crashing', () => {
-    const wrapper = render(
-      <ThemeProvider theme={theme}>
-        <CommentFormStyled handleFormSubmit={submitHandler} />
-      </ThemeProvider>,
-    );
-    expect(wrapper.text()).toContain('Add a comment');
-  });
-});
+  const submitHandler = jest.fn();
 
-describe('<CommentForm /> shallow', () => {
-  let wrapper;
-  beforeAll(() => {
-    wrapper = shallow(
-      <CommentForm classes={{}} handleFormSubmit={submitHandler} />,
+  test('loading state', () => {
+    const { baseElement, queryByText } = render(
+      <CommentForm isLoading={true} handleFormSubmit={submitHandler} />,
     );
+    expect(baseElement.getElementsByTagName('svg').length).toBe(1);
+    expect(queryByText('Add a comment')).toBeNull();
   });
-  test('<Form/> component', () => {
-    const form = wrapper.find(Form);
-    expect(form.length).toBe(1);
-    expect(form.prop('onSubmit')).toBe(submitHandler);
+
+  test('form submission', () => {
+    const { getByLabelText, baseElement } = render(
+      <CommentForm isLoading={false} handleFormSubmit={submitHandler} />,
+    );
+    const input = getByLabelText('Add a comment');
+    expect(input).toBeDefined();
+    fireEvent.change(input, { target: { value: 'Some comment' } });
+    // unfortunatelly I see no option to trigger form submit by
+    // triggering keyPress ENTER event inside input field
+    fireEvent.submit(baseElement.getElementsByTagName('form')[0]);
+    // fireEvent.keyPress(input, {
+    //   // key: 'Enter',
+    //   code: 13,
+    //   // which: 13,
+    // });
+    expect(submitHandler).toBeCalledTimes(1);
+    expect(input.value).toBe('');
   });
 });
