@@ -1,32 +1,30 @@
 import React from 'react';
-import CommentListStyled, { CommentList } from './index';
+import { render } from 'test-utils';
+import CommentList from './index';
 import CommentItem from '../CommentItem';
-import { shallow, render } from 'enzyme';
-import theme from '../../../theme';
-import { ThemeProvider } from 'react-jss';
+jest.mock('../CommentItem', () => jest.fn(() => <div />));
 
 const data = {
-  list: [{}, {}, {}],
+  list: [{}, {}, {}, {}, {}],
 };
 
-describe('<CommentList /> rendering', () => {
-  it('renders without crashing', () => {
-    const wrapper = render(
-      <ThemeProvider theme={theme}>
-        <CommentListStyled list={[]} />
-      </ThemeProvider>,
-    );
-    expect(wrapper.text()).toContain('Be the first to write a comment');
+describe('<CommentList />', () => {
+  test('loading state', () => {
+    const { baseElement } = render(<CommentList {...data} isLoading={true} />);
+    // there are no loaders directly inside CommentList
+    expect(baseElement.getElementsByTagName('svg').length).toBe(0);
+    expect(CommentItem).toBeCalledTimes(3);
+    expect(CommentItem.mock.calls[0][0].isLoading).toBe(true);
   });
-});
 
-describe('<CommentList /> shallow', () => {
-  let wrapper;
-  beforeAll(() => {
-    wrapper = shallow(<CommentList classes={{}} {...data} />);
+  test('rendering', () => {
+    CommentItem.mockClear();
+    render(<CommentList {...data} isLoading={false} />);
+    expect(CommentItem).toBeCalledTimes(5);
   });
-  test('<CommentItem/> components', () => {
-    const comment = wrapper.find(CommentItem);
-    expect(comment.length).toBe(3);
+
+  test('rendering with no items', () => {
+    const { getByText } = render(<CommentList list={[]} isLoading={false} />);
+    expect(getByText('Be the first to write a comment!')).toBeDefined();
   });
 });
