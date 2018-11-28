@@ -29,7 +29,7 @@
     "dist": "yarn build && yarn pack",
     "docs": "cp dist/social-widget.min.js docs",
     "test": "CI=true react-scripts test",
-    "test:watch": "react-scripts test --notify",
+    "test:watch": "react-scripts test",
     "lint": "eslint src",
     "flow": "flow src",
     "coverage": "react-scripts test --coverage",
