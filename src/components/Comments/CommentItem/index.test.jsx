@@ -1,43 +1,31 @@
 import React from 'react';
-import CommentItemStyled, { CommentItem } from './index';
-import { shallow, render } from 'enzyme';
-import theme from '../../../theme';
-import { ThemeProvider } from 'react-jss';
+import CommentItem from './index';
+import { render } from 'test-utils';
 
 const data = {
   imgSrc: './test.jpg',
   content:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   author: 'John Doe',
-  pubTimestamp: 1542538779103,
+  pubTimestamp: Date.now() - 26 * 60 * 60 * 1000, // now() - 26 h
 };
 
 describe('<CommentItem />', () => {
-  it('renders without crashing', () => {
-    const wrapper = render(
-      <ThemeProvider theme={theme}>
-        <CommentItemStyled {...data} />
-      </ThemeProvider>,
+  test('loading state', () => {
+    const { baseElement } = render(<CommentItem {...data} isLoading={true} />);
+    expect(baseElement.getElementsByTagName('svg').length).toBe(3);
+  });
+  test('rendering', () => {
+    const { getByText, getByAltText } = render(
+      <CommentItem {...data} isLoading={false} />,
     );
-    const text = wrapper.text();
-    expect(text).toContain(data.author);
-    expect(text).toContain(data.content);
-  });
-});
-
-describe('<CommentItem /> shallow', () => {
-  let wrapper;
-  beforeAll(() => {
-    wrapper = shallow(<CommentItem classes={{}} {...data} />);
-  });
-  test('<img/> tag', () => {
-    const img = wrapper.find('img');
-    expect(img.length).toBe(1);
-    expect(img.prop('src')).toBe(data.imgSrc);
-  });
-  test('<time/> tag', () => {
-    const time = wrapper.find('time');
-    expect(time.length).toBe(1);
-    expect(time.prop('dateTime')).toBe('2018-11-18T11:59:39+01:00');
+    expect(getByAltText(data.author).src).toContain(data.imgSrc.substr(1));
+    expect(getByText(data.content)).toBeDefined();
+    expect(getByText('1d')).toBeDefined();
+    // regExp is more permissive than required but it doesn't matter
+    expect(getByText('1d').getAttribute('dateTime')).toMatch(
+      /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}$/,
+    );
+    expect(getByText('1d').getAttribute('pubdate')).toBe('pubdate');
   });
 });
