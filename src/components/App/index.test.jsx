@@ -1,12 +1,10 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import { ThemeProvider } from 'react-jss';
-import AppStyled, { App } from './index';
-import Profile from '../Profile';
-import Comments from '../Comments';
-import theme from '../../theme';
+import App from './index';
+import { render, waitForElement, fireEvent } from 'test-utils';
+import WebFont from 'webfontloader';
 import { loadData } from '../../dataSources';
 jest.mock('../../dataSources');
+jest.mock('webfontloader');
 
 const source = {
   profile: {
@@ -18,101 +16,103 @@ const source = {
     following: 723,
     followers: 4433,
   },
-  commentList: [],
+  commentList: new Array(10).fill({}).map((item, index) => ({
+    imgSrc: './test.jpg',
+    author: `Test ${index + 1}`,
+    content: `Test content ${index + 1}`,
+    pubTimestamp: 1543420231093,
+  })),
 };
-loadData.mockImplementation(() => source);
+loadData.mockImplementation(
+  async url =>
+    new Promise(resolve => {
+      if (url !== 'http://loading') {
+        resolve(source);
+      }
+    }),
+);
+WebFont.load.mockImplementation(({ fontactive }) => {
+  // instantly activate font
+  fontactive();
+});
 
 const mockAlert = jest.fn();
 window.alert = mockAlert;
 
-const dateNowMock = 1487076708000;
-let dateNowSpy;
-
 describe('<App />', () => {
-  test('mounting without crash', async () => {
-    const wrapper = await mount(
-      <ThemeProvider theme={theme}>
-        <AppStyled classes={{}} />
-      </ThemeProvider>,
+  test('loading state', () => {
+    const { baseElement } = render(<App dataUrl="http://loading" />);
+    expect(loadData).toBeCalledTimes(1);
+    expect(WebFont.load).toBeCalledTimes(1);
+    // loaders number: 1 (photo) + 1 (header) + 1 (follow btn) + 6 (counters)
+    // + 1 (show/hide) + 10 comments list
+    expect(baseElement.getElementsByTagName('svg').length).toBe(
+      3 + 6 + 1 + source.commentList.length,
     );
-    expect(wrapper.find('svg').length).toBe(20);
-  });
-});
-
-describe('<App /> shallow', () => {
-  let wrapper;
-  beforeAll(() => {
-    wrapper = shallow(<App classes={{}} />);
-    dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => dateNowMock);
   });
 
-  afterAll(() => {
-    dateNowSpy.mockRestore();
-  });
-
-  test('props of <Profile /> component', () => {
-    const profile = wrapper.find(Profile);
-    expect(profile.length).toBe(1);
-    expect(profile.prop('data')).toEqual(source.profile);
-    expect(profile.prop('isFollowed')).toEqual(false);
-    expect(profile.prop('isLiked')).toEqual(false);
-  });
-  test('<Comments /> component', () => {
-    const comments = wrapper.find(Comments);
-    expect(comments.length).toBe(1);
-    expect(comments.prop('list')).toEqual(source.commentList);
-    expect(comments.prop('isHidden')).toEqual(false);
-  });
-  test('state after componentDidMount', () => {
-    expect(wrapper.state()).toEqual({
-      profile: source.profile,
-      commentList: source.commentList,
-      isFollowed: false,
-      isLiked: false,
-      isLoadingData: false,
-      isLoadingFont: true,
-      commentsHidden: false,
-    });
-  });
-  test('handleFollow() method', () => {
-    wrapper.instance().handleFollow();
-    expect(wrapper.state('isFollowed')).toBe(true);
-    expect(wrapper.state('profile').followers).toBe(
-      source.profile.followers + 1,
+  test('rendering after load is done', async () => {
+    const { queryAllByText, getByAltText, getByText, baseElement } = render(
+      <App dataUrl="http://loaded" />,
     );
-    wrapper.instance().handleFollow();
-    expect(wrapper.state('isFollowed')).toBe(false);
-    expect(wrapper.state('profile').followers).toBe(source.profile.followers);
+    await waitForElement(() => getByText(source.profile.name));
+    // share and like buttons are SVGs
+    expect(baseElement.getElementsByTagName('svg').length).toBe(2);
+
+    expect(getByText(source.profile.country, { exact: false })).toBeDefined();
+    expect(getByText(source.profile.city, { exact: false })).toBeDefined();
+    expect(getByText(source.profile.likes.toString())).toBeDefined();
+    expect(getByText(source.profile.following.toString())).toBeDefined();
+    expect(getByText(source.profile.followers.toString())).toBeDefined();
+    expect(getByAltText(source.profile.name).src).toContain(
+      source.profile.imgSrc.substr(1),
+    );
+    // Comments
+    expect(queryAllByText(/^Test content.*$/g).length).toBe(10);
   });
-  test('handleLike() method', () => {
-    wrapper.instance().handleLike();
-    expect(wrapper.state('isLiked')).toBe(true);
-    expect(wrapper.state('profile').likes).toBe(source.profile.likes + 1);
-    wrapper.instance().handleLike();
-    expect(wrapper.state('isLiked')).toBe(false);
-    expect(wrapper.state('profile').likes).toBe(source.profile.likes);
-  });
-  test('handleShare() method', () => {
-    wrapper.instance().handleShare();
+
+  test('integration tests', async () => {
+    const {
+      baseElement,
+      queryByText,
+      queryAllByText,
+      getByText,
+      getByTitle,
+      getByLabelText,
+    } = render(<App dataUrl="http://loaded" />);
+
+    await waitForElement(() => getByText(source.profile.name));
+
+    fireEvent.click(getByText('Follow'));
+    expect(getByText((source.profile.followers + 1).toString())).toBeDefined();
+    fireEvent.click(getByText('Unfollow'));
+    expect(getByText(source.profile.followers.toString())).toBeDefined();
+
+    fireEvent.click(getByTitle('Like'));
+    expect(getByText((source.profile.likes + 1).toString())).toBeDefined();
+    fireEvent.click(getByTitle('Dislike'));
+    expect(getByText(source.profile.likes.toString())).toBeDefined();
+
+    fireEvent.click(getByTitle('Share'));
     expect(mockAlert).toHaveBeenCalledTimes(1);
-  });
-  test('handleCommentsHide() method', () => {
-    wrapper.instance().handleCommentsHide();
-    expect(wrapper.state('commentsHidden')).toBe(true);
-    wrapper.instance().handleCommentsHide();
-    expect(wrapper.state('commentsHidden')).toBe(false);
-  });
-  test('handleAddComment() method', () => {
-    const initCommentList = wrapper.state('commentList');
-    wrapper.instance().handleAddComment({ comment: 'Something' });
-    const commentList = wrapper.state('commentList');
-    expect(initCommentList.length + 1).toBe(commentList.length);
-    expect(commentList[commentList.length - 1]).toEqual({
-      author: 'Mike Ross',
-      imgSrc: './harvey-specter.jpg',
-      pubTimestamp: dateNowMock,
-      content: 'Something',
+
+    // Hide/show comments
+    fireEvent.click(getByText('Hide comments (10)'));
+    await waitForElement(() => !queryByText('Test 1'));
+    expect(queryAllByText(/^Test content.*$/g).length).toBe(0);
+    fireEvent.click(getByText('Show comments (10)'));
+    await waitForElement(() => queryByText('Test 1'));
+    expect(queryAllByText(/^Test content.*$/g).length).toBe(10);
+
+    // Add comment
+    const input = getByLabelText('Add a comment');
+    fireEvent.change(input, {
+      target: { value: 'Test content new' },
     });
-    expect(dateNowSpy).toHaveBeenCalledTimes(1);
+    fireEvent.submit(baseElement.getElementsByTagName('form')[0]);
+    expect(input.value).toBe('');
+    expect(queryAllByText(/^Test content.*$/g).length).toBe(11);
+    expect(getByText('Test content new')).toBeDefined();
+    expect(getByText('1s')).toBeDefined();
   });
 });
