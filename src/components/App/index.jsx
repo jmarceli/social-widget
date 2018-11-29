@@ -78,27 +78,24 @@ export class App extends React.Component<Props, State> {
     },
   };
 
-  constructor() {
-    super();
+  async componentDidMount() {
     WebFont.load({
       google: {
         families: ['Montserrat:400,600', 'sans-serif'],
       },
       fontactive: () => {
-        this.setState({
+        this.setState(() => ({
           isLoadingFont: false,
-        });
+        }));
       },
     });
-  }
 
-  async componentDidMount() {
     const data = await loadData(this.props.dataUrl);
-    this.setState({
+    this.setState(() => ({
       isLoadingData: false,
       profile: data.profile,
       commentList: data.commentList,
-    });
+    }));
   }
 
   handleFollow() {
