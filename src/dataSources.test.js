@@ -10,11 +10,11 @@ const mockData = {
   ],
 };
 
-const mockResponse = {
-  json: () => mockData,
-};
+const mockResponse = url => ({
+  json: () => (url === './empty.json' ? {} : mockData),
+});
 
-const mockFetch = jest.fn().mockImplementation(() => mockResponse);
+const mockFetch = jest.fn().mockImplementation(mockResponse);
 window.fetch = mockFetch;
 
 describe('loadData()', () => {
@@ -28,5 +28,12 @@ describe('loadData()', () => {
       { pubTimestamp: 457 },
     ]);
     expect(mockFetch).toHaveBeenCalledWith('./profile.json');
+  });
+
+  test('handles empty response', async () => {
+    const result = await loadData('./empty.json');
+    expect(result).toEqual({});
+    expect(result.commentList).toBeUndefined();
+    expect(mockFetch).toHaveBeenCalledWith('./empty.json');
   });
 });

@@ -114,5 +114,12 @@ describe('<App />', () => {
     expect(queryAllByText(/^Test content.*$/g).length).toBe(11);
     expect(getByText('Test content new')).toBeDefined();
     expect(getByText('1s')).toBeDefined();
+
+    // Add empty comment
+    fireEvent.change(input, {
+      target: { value: '' },
+    });
+    fireEvent.submit(baseElement.getElementsByTagName('form')[0]);
+    expect(queryAllByText(/^Test content.*$/g).length).toBe(11);
   });
 });

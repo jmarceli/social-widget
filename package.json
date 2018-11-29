@@ -32,7 +32,7 @@
     "test:watch": "react-scripts test",
     "lint": "eslint src",
     "flow": "flow src",
-    "coverage": "react-scripts test --coverage",
+    "coverage": "CI=true react-scripts test --coverage",
     "eject": "react-scripts eject",
     "precommit": "yarn flow && yarn lint && yarn test"
   },
@@ -64,5 +64,11 @@
     "hooks": {
       "pre-commit": "yarn precommit"
     }
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js"
+    ]
   }
 }
