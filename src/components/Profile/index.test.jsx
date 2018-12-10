@@ -1,29 +1,38 @@
 import React from 'react';
+import { createStore } from 'redux';
 import { render, fireEvent } from 'test-utils';
+import reducer from './reducer';
+
 import Profile from './index';
 import Counter from './Counter';
 jest.mock('./Counter', () => jest.fn(() => <div />));
-
 const data = {
   imgSrc: './img.test.jpg',
   name: 'Harvey Specter',
   city: 'New York',
   country: 'USA',
-  likes: 121,
-  following: 723,
-  followers: 4433,
+  likesCount: 121,
+  followingCount: 723,
+  followersCount: 4433,
+  isLiked: false,
+  isFollowed: false,
+  isLoading: false,
 };
+
+const mockAlert = jest.fn();
+window.alert = mockAlert;
 
 describe('<Profile />', () => {
   test('rendering when isLoading=false', () => {
+    const storeMock = createStore(reducer, data);
     const { getByText, getByTitle, getByAltText } = render(
-      <Profile isLoading={false} data={data} />,
+      <Profile store={storeMock} />,
     );
     expect(Counter).toBeCalledTimes(3);
     expect(Counter.mock.calls[0][0]).toEqual(
       expect.objectContaining({
         label: 'Likes',
-        count: data.likes,
+        count: data.likesCount,
         isLoading: false,
       }),
     );
@@ -36,12 +45,12 @@ describe('<Profile />', () => {
   });
   test('rendering when isLoading=true', () => {
     Counter.mockClear();
-    const { baseElement, queryByText } = render(<Profile isLoading={true} />);
+    const storeMock = createStore(reducer, { ...data, isLoading: true });
+    const { baseElement, queryByText } = render(<Profile store={storeMock} />);
     expect(Counter).toBeCalledTimes(3);
     expect(Counter.mock.calls[0][0]).toEqual(
       expect.objectContaining({
         label: 'Likes',
-        count: undefined,
         isLoading: true,
       }),
     );
@@ -52,34 +61,28 @@ describe('<Profile />', () => {
     // loaders number: 1 (photo) + 1 (header) + 1 (follow btn)
     expect(baseElement.getElementsByTagName('svg').length).toBe(3);
   });
-  test('follow button clicking', () => {
-    const handleFollow = jest.fn();
-    const { getByText, rerender } = render(
-      <Profile isLoading={false} data={data} handleFollow={handleFollow} />,
-    );
+  test('follow button clicking', async () => {
+    const storeMock = createStore(reducer, data);
+    const { getByText } = render(<Profile store={storeMock} />);
     fireEvent.click(getByText('Follow'));
-    expect(handleFollow).toBeCalledTimes(1);
-    rerender(<Profile isFollowed={true} handleFollow={handleFollow} />);
+    expect(storeMock.getState().followersCount).toBe(data.followersCount + 1);
     fireEvent.click(getByText('Unfollow'));
-    expect(handleFollow).toBeCalledTimes(2);
+    expect(getByText('Follow')).toBeDefined();
+    expect(storeMock.getState().followersCount).toBe(data.followersCount);
   });
   test('like button clicking', () => {
-    const handleLike = jest.fn();
-    const { getByTitle, rerender } = render(
-      <Profile isLoading={false} data={data} handleLike={handleLike} />,
-    );
+    const storeMock = createStore(reducer, data);
+    const { getByTitle } = render(<Profile store={storeMock} />);
     fireEvent.click(getByTitle('Like'));
-    expect(handleLike).toBeCalledTimes(1);
-    rerender(<Profile isLiked={true} handleLike={handleLike} />);
+    expect(storeMock.getState().likesCount).toBe(data.likesCount + 1);
     fireEvent.click(getByTitle('Dislike'));
-    expect(handleLike).toBeCalledTimes(2);
+    expect(getByTitle('Like')).toBeDefined();
+    expect(storeMock.getState().likesCount).toBe(data.likesCount);
   });
   test('share button clicking', () => {
-    const handleShare = jest.fn();
-    const { getByTitle } = render(
-      <Profile isLoading={false} data={data} handleShare={handleShare} />,
-    );
+    const storeMock = createStore(reducer, data);
+    const { getByTitle } = render(<Profile store={storeMock} />);
     fireEvent.click(getByTitle('Share'));
-    expect(handleShare).toBeCalledTimes(1);
+    expect(mockAlert).toBeCalledTimes(1);
   });
 });

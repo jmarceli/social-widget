@@ -4,9 +4,9 @@
     "name": "Harvey Specter",
     "city": "New York",
     "country": "USA",
-    "likes": 121,
-    "following": 723,
-    "followers": 4433
+    "likesCount": 121,
+    "followingCount": 723,
+    "followersCount": 4433
   },
   "commentList": [
     {
