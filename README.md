@@ -37,9 +37,9 @@ JSON data source example:
     "name": "Harvey Specter",
     "city": "New York",
     "country": "USA",
-    "likes": 121,
-    "following": 723,
-    "followers": 4433
+    "likesCount": 121,
+    "followingCount": 723,
+    "followersCount": 4433
   },
   "commentList": [
     {
@@ -95,9 +95,9 @@ Where:
 - `profile.name` - person name
 - `profile.city` - location info
 - `profile.country` - location info
-- `profile.likes` - number of likes
-- `profile.following` - number of followed people
-- `profile.followers` - number of followers (incremented with FOLLOW button)
+- `profile.likesCount` - number of likes
+- `profile.followingCount` - number of followed people
+- `profile.followersCount` - number of followers (incremented with FOLLOW button)
 - `commentList[]` - array with comment objects
 - `commentList[].author` - comment author name and surname
 - `commentList[].content` - comment content
