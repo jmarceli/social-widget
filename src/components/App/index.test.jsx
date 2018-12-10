@@ -42,7 +42,7 @@ describe('<App />', () => {
     expect(fontLoad).toBeCalledTimes(1);
     expect(fontLoad).toBeCalledWith(wrapType);
 
-    expect(Profile).toBeCalledTimes(1);
+    expect(Profile).toBeCalledTimes(2);
     // expect(WebFont.load).toBeCalledTimes(1);
     // loaders number: 1 (photo) + 1 (header) + 1 (follow btn) + 6 (counters)
     // + 1 (show/hide) + 10 comments list

@@ -39,6 +39,10 @@ class App extends React.Component<Props> {
                 getState={(state: any) => this.props.getState(state).profile}
                 wrapType={type => this.props.wrapType(`profile.${type}`)}
               />
+              <Profile
+                getState={(state: any) => this.props.getState(state).profile2}
+                wrapType={type => this.props.wrapType(`profile2.${type}`)}
+              />
             </div>
             {/*<Comments
               isLoading={isLoadingFont || isLoadingData}

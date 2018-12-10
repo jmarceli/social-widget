@@ -39,8 +39,8 @@ describe('<Root />', () => {
   test('rendering loading state', () => {
     WebFont.load.mockImplementation(() => null); // never load a font
     const { baseElement } = render(<Root store={store} url="http://loading" />);
-    // image + name + location + (3 * Counter)
-    expect(baseElement.getElementsByTagName('svg').length).toBe(9);
+    // (image + name + location + (3 * Counter)) * 2
+    expect(baseElement.getElementsByTagName('svg').length).toBe(18);
   });
 
   test('rendering after load is done', async () => {
@@ -54,7 +54,7 @@ describe('<Root />', () => {
     );
     await waitForElement(() => getByText(source.profile.name));
     // share and like buttons are SVGs
-    expect(baseElement.getElementsByTagName('svg').length).toBe(2);
+    expect(baseElement.getElementsByTagName('svg').length).toBe(4);
 
     expect(getByText(source.profile.country, { exact: false })).toBeDefined();
     expect(getByText(source.profile.city, { exact: false })).toBeDefined();
