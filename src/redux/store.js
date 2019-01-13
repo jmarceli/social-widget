@@ -1,11 +1,14 @@
 // @flow
 import { applyMiddleware, compose, createStore } from 'redux';
-import reducer from '../components/Root/reducer';
-import initialState from '../components/Root/state';
-import thunk from 'redux-thunk';
+import { createEpicMiddleware } from 'redux-observable';
+// import thunk from 'redux-thunk';
+import reducer from './reducer';
+import epic from './epic';
+
+const epicMiddleware = createEpicMiddleware();
 
 const enhancers = [];
-const middleware = [thunk];
+const middleware = [epicMiddleware]; //, thunk];
 
 // eslint-disable-next-line
 if (process.env.NODE_ENV === 'development') {
@@ -21,6 +24,7 @@ const composedEnhancers = compose(
   ...enhancers,
 );
 
-const store = createStore(reducer, initialState, composedEnhancers);
+const store = createStore(reducer, composedEnhancers);
+epicMiddleware.run(epic);
 
 export default store;

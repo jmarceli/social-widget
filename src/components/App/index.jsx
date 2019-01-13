@@ -1,13 +1,16 @@
 // @flow
 import React from 'react';
+import { connect } from 'react-redux';
 import Profile from '../Profile';
 import Comments from '../Comments';
 import WebFont from 'webfontloader';
 import injectSheet from 'react-jss';
 
 import { loadData } from '../../dataSources';
-import type { Comment, ProfileData } from '../../dataSources';
+import type { Comment } from '../../dataSources';
 import type { Theme } from '../../theme';
+
+import * as a from '../../redux/profile/actions';
 
 const topPadding = 12;
 const bgTopHeight = 95;
@@ -48,13 +51,11 @@ const styles = (theme: Theme) => ({
 type Props = {
   classes: { [string]: {} },
   dataUrl: string,
+  loadProfileData: () => void,
 };
 type State = {
   commentList: Comment[],
-  profile: ProfileData,
   commentsHidden: boolean,
-  isFollowed: boolean,
-  isLiked: boolean,
   isLoadingFont: boolean,
   isLoadingData: boolean,
 };
@@ -63,22 +64,12 @@ export class App extends React.Component<Props, State> {
   state = {
     isLoadingData: true,
     isLoadingFont: true,
-    isFollowed: false,
-    isLiked: false,
     commentsHidden: false,
     commentList: [],
-    profile: {
-      imgSrc: '',
-      name: '',
-      city: '',
-      country: '',
-      followers: 0,
-      likes: 0,
-      following: 0,
-    },
   };
 
   async componentDidMount() {
+    this.props.loadProfileData();
     WebFont.load({
       google: {
         families: ['Montserrat:400,600', 'sans-serif'],
@@ -93,42 +84,41 @@ export class App extends React.Component<Props, State> {
     const data = await loadData(this.props.dataUrl);
     this.setState(() => ({
       isLoadingData: false,
-      profile: data.profile,
       commentList: data.commentList,
     }));
   }
 
-  handleFollow() {
-    this.setState(oldState => {
-      const alreadyFollowed = oldState.isFollowed;
-      const followers = alreadyFollowed
-        ? oldState.profile.followers - 1
-        : oldState.profile.followers + 1;
+  // handleFollow() {
+  //   this.setState(oldState => {
+  //     const alreadyFollowed = oldState.isFollowed;
+  //     const followers = alreadyFollowed
+  //       ? oldState.profile.followers - 1
+  //       : oldState.profile.followers + 1;
 
-      return {
-        profile: { ...oldState.profile, followers },
-        isFollowed: !oldState.isFollowed,
-      };
-    });
-  }
+  //     return {
+  //       profile: { ...oldState.profile, followers },
+  //       isFollowed: !oldState.isFollowed,
+  //     };
+  //   });
+  // }
 
-  handleShare() {
-    window.alert(window.location.href);
-  }
+  // handleShare() {
+  //   window.alert(window.location.href);
+  // }
 
-  handleLike() {
-    this.setState(oldState => {
-      const alreadyLiked = oldState.isLiked;
-      const likes = alreadyLiked
-        ? oldState.profile.likes - 1
-        : oldState.profile.likes + 1;
+  // handleLike() {
+  //   this.setState(oldState => {
+  //     const alreadyLiked = oldState.isLiked;
+  //     const likes = alreadyLiked
+  //       ? oldState.profile.likes - 1
+  //       : oldState.profile.likes + 1;
 
-      return {
-        profile: { ...oldState.profile, likes },
-        isLiked: !oldState.isLiked,
-      };
-    });
-  }
+  //     return {
+  //       profile: { ...oldState.profile, likes },
+  //       isLiked: !oldState.isLiked,
+  //     };
+  //   });
+  // }
 
   handleCommentsHide() {
     this.setState(oldState => {
@@ -165,10 +155,7 @@ export class App extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
     const {
-      profile,
       commentList,
-      isFollowed,
-      isLiked,
       isLoadingFont,
       isLoadingData,
       commentsHidden,
@@ -180,15 +167,7 @@ export class App extends React.Component<Props, State> {
           <div className={classes.bgTop} />
           <div className={classes.container}>
             <div className={classes.profileWrapper}>
-              <Profile
-                isLoading={isLoadingFont || isLoadingData}
-                data={profile}
-                isFollowed={isFollowed}
-                isLiked={isLiked}
-                handleShare={() => this.handleShare()}
-                handleFollow={() => this.handleFollow()}
-                handleLike={() => this.handleLike()}
-              />
+              <Profile url={this.props.dataUrl} />
             </div>
             <Comments
               isLoading={isLoadingFont || isLoadingData}
@@ -204,4 +183,9 @@ export class App extends React.Component<Props, State> {
   }
 }
 
-export default injectSheet(styles)(App);
+export default connect(
+  undefined,
+  (dispatch, props) => ({
+    loadProfileData: () => dispatch(a.loadRequest(props.dataUrl)),
+  }),
+)(injectSheet(styles)(App));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from 'test-utils';
-import Profile from './index';
+import { ProfileStyled as Profile } from './index';
 import Counter from './Counter';
 jest.mock('./Counter', () => jest.fn(() => <div />));
 
@@ -59,7 +59,12 @@ describe('<Profile />', () => {
     );
     fireEvent.click(getByText('Follow'));
     expect(handleFollow).toBeCalledTimes(1);
-    rerender(<Profile isFollowed={true} handleFollow={handleFollow} />);
+    rerender(
+      <Profile
+        data={{ ...data, isFollowed: true }}
+        handleFollow={handleFollow}
+      />,
+    );
     fireEvent.click(getByText('Unfollow'));
     expect(handleFollow).toBeCalledTimes(2);
   });
@@ -70,7 +75,9 @@ describe('<Profile />', () => {
     );
     fireEvent.click(getByTitle('Like'));
     expect(handleLike).toBeCalledTimes(1);
-    rerender(<Profile isLiked={true} handleLike={handleLike} />);
+    rerender(
+      <Profile data={{ ...data, isLiked: true }} handleLike={handleLike} />,
+    );
     fireEvent.click(getByTitle('Dislike'));
     expect(handleLike).toBeCalledTimes(2);
   });

@@ -22,7 +22,7 @@
     "react-scroll": "^1.7.10",
     "react-transition-group": "^2.5.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
+    "redux-observable": "^1.0.0",
     "webfontloader": "^1.6.28"
   },
   "scripts": {

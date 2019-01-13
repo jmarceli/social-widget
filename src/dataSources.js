@@ -7,6 +7,8 @@ export type ProfileData = {
   followers: number,
   likes: number,
   following: number,
+  isFollowed: boolean,
+  isLiked: boolean,
 };
 export type Comment = {
   imgSrc: string,
