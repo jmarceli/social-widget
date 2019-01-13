@@ -22,6 +22,15 @@ const reducer = (state: State = initState, action: Action) => {
         ...state,
         error: action.error,
       };
+    case c.LIKE_REQUEST:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          likes: state.data.likes + (action.payload.addLike ? 1 : -1),
+          isLiked: action.payload.addLike,
+        },
+      };
 
     default:
       return state;

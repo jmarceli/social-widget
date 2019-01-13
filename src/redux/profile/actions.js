@@ -14,6 +14,10 @@ export const loadError = (error: any): t.LoadErrorAction => ({
   error,
   type: c.LOAD_ERROR,
 });
+export const likeRequest = (addLike: boolean): t.LikeRequestAction => ({
+  type: c.LIKE_REQUEST,
+  payload: { addLike },
+});
 
 // export const save = (deviceId: string, editableData: t.Editable): t.SaveAction => ({
 //   deviceId,

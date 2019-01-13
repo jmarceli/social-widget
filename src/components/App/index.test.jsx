@@ -94,10 +94,10 @@ describe('<App />', () => {
     // fireEvent.click(getByText('Unfollow'));
     // expect(getByText(source.profile.followers.toString())).toBeDefined();
 
-    // fireEvent.click(getByTitle('Like'));
-    // expect(getByText((source.profile.likes + 1).toString())).toBeDefined();
-    // fireEvent.click(getByTitle('Dislike'));
-    // expect(getByText(source.profile.likes.toString())).toBeDefined();
+    fireEvent.click(getByTitle('Like'));
+    expect(getByText((source.profile.likes + 1).toString())).toBeDefined();
+    fireEvent.click(getByTitle('Dislike'));
+    expect(getByText(source.profile.likes.toString())).toBeDefined();
 
     // fireEvent.click(getByTitle('Share'));
     // expect(mockAlert).toHaveBeenCalledTimes(1);

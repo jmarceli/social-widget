@@ -32,5 +32,9 @@ export type LoadSuccessAction = {|
   data: Profile,
 |};
 export type LoadErrorAction = {| type: typeof c.LOAD_ERROR, error: any |};
+export type LikeRequestAction = {|
+  type: typeof c.LIKE_REQUEST,
+  payload: { addLike: boolean },
+|};
 
 export type Action = LoadRequestAction | LoadSuccessAction | LoadErrorAction;

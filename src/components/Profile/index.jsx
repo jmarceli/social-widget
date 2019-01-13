@@ -16,12 +16,13 @@ import styles from './styles';
 type Props = {
   classes: { [string]: {} },
   data: ProfileData,
-  handleLike: () => void,
+  handleLike: (isLiked: boolean) => void,
   handleFollow: () => void,
   handleShare: () => void,
-  handleReload: () => void,
+  handleReload: (url: string) => void,
   isLoading: boolean,
   error: ?string,
+  url: string,
 };
 
 export const Profile = ({
@@ -42,6 +43,7 @@ export const Profile = ({
   handleShare,
   handleReload,
   isLoading,
+  url,
   error,
 }: Props) => (
   <section className={classes.root}>
@@ -49,7 +51,7 @@ export const Profile = ({
       {error ? (
         <>
           <div>Loading error</div>
-          <button onClick={handleReload}>Try again!</button>
+          <button onClick={() => handleReload(url)}>Try again!</button>
         </>
       ) : (
         <>
@@ -84,7 +86,7 @@ export const Profile = ({
                       classes.btnLike,
                       isLiked && classes.isLiked,
                     )}
-                    onClick={handleLike}
+                    onClick={() => handleLike(isLiked)}
                     title={isLiked ? 'Dislike' : 'Like'}
                   >
                     <FontAwesomeIcon icon={LikeIcon} />
@@ -162,13 +164,13 @@ const mapStateToProps = state => ({
   data: state.profile.data,
   isLoading: state.profile.isLoading,
   error: state.profile.error,
-  handleLike: () => {},
   handleFollow: () => {},
   handleShare: () => {},
 });
 
-const mapDispatchToProps = (dispatch, props) => ({
-  handleReload: () => dispatch(a.loadRequest(props.url)),
+const mapDispatchToProps = dispatch => ({
+  handleReload: (url: string) => dispatch(a.loadRequest(url)),
+  handleLike: (isLiked: boolean) => dispatch(a.likeRequest(!isLiked)),
 });
 
 export default connect(
