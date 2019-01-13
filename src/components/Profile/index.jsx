@@ -164,13 +164,15 @@ const mapStateToProps = state => ({
   data: state.profile.data,
   isLoading: state.profile.isLoading,
   error: state.profile.error,
-  handleShare: () => {},
 });
 
 const mapDispatchToProps = dispatch => ({
   handleReload: (url: string) => dispatch(a.loadRequest(url)),
   handleLike: (isLiked: boolean) => dispatch(a.likeRequest(!isLiked)),
   handleFollow: (isFollowed: boolean) => dispatch(a.followRequest(!isFollowed)),
+  handleShare: () => {
+    window.alert(window.location.href);
+  },
 });
 
 export default connect(

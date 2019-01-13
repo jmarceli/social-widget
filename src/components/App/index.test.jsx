@@ -98,8 +98,8 @@ describe('<App />', () => {
     fireEvent.click(getByTitle('Dislike'));
     expect(getByText(source.profile.likes.toString())).toBeDefined();
 
-    // fireEvent.click(getByTitle('Share'));
-    // expect(mockAlert).toHaveBeenCalledTimes(1);
+    fireEvent.click(getByTitle('Share'));
+    expect(mockAlert).toHaveBeenCalledTimes(1);
 
     // Hide/show comments
     fireEvent.click(getByText('Hide comments (10)'));
