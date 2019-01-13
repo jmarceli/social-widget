@@ -15,7 +15,10 @@ const reducer = (state: State = initState, action: Action) => {
       return {
         error: false,
         isLoading: false,
-        data: action.data,
+        data: {
+          ...initState.data,
+          ...action.data,
+        },
       };
     case c.LOAD_ERROR:
       return {
