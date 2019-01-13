@@ -17,7 +17,7 @@ type Props = {
   classes: { [string]: {} },
   data: ProfileData,
   handleLike: (isLiked: boolean) => void,
-  handleFollow: () => void,
+  handleFollow: (isFollowed: boolean) => void,
   handleShare: () => void,
   handleReload: (url: string) => void,
   isLoading: boolean,
@@ -146,7 +146,7 @@ export const Profile = ({
                   classes.btnFollow,
                   isFollowed && classes.isFollowed,
                 )}
-                onClick={handleFollow}
+                onClick={() => handleFollow(isFollowed)}
               >
                 {isFollowed ? 'Unfollow' : 'Follow'}
               </button>
@@ -164,13 +164,13 @@ const mapStateToProps = state => ({
   data: state.profile.data,
   isLoading: state.profile.isLoading,
   error: state.profile.error,
-  handleFollow: () => {},
   handleShare: () => {},
 });
 
 const mapDispatchToProps = dispatch => ({
   handleReload: (url: string) => dispatch(a.loadRequest(url)),
   handleLike: (isLiked: boolean) => dispatch(a.likeRequest(!isLiked)),
+  handleFollow: (isFollowed: boolean) => dispatch(a.followRequest(!isFollowed)),
 });
 
 export default connect(

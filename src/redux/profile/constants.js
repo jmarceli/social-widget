@@ -4,3 +4,4 @@ export const LOAD_SUCCESS = 'profile/LOAD_SUCCESS';
 export const LOAD_ERROR = 'profile/LOAD_ERROR';
 
 export const LIKE_REQUEST = 'profile/LIKE_REQUEST';
+export const FOLLOW_REQUEST = 'profile/FOLLOW_REQUEST';

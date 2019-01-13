@@ -31,6 +31,15 @@ const reducer = (state: State = initState, action: Action) => {
           isLiked: action.payload.addLike,
         },
       };
+    case c.FOLLOW_REQUEST:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          followers: state.data.followers + (action.payload.addFollow ? 1 : -1),
+          isFollowed: action.payload.addFollow,
+        },
+      };
 
     default:
       return state;

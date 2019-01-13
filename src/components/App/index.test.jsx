@@ -88,11 +88,10 @@ describe('<App />', () => {
 
     await waitForElement(() => getByText(source.profile.name));
 
-    // TODO: fix test
-    // fireEvent.click(getByText('Follow'));
-    // expect(getByText((source.profile.followers + 1).toString())).toBeDefined();
-    // fireEvent.click(getByText('Unfollow'));
-    // expect(getByText(source.profile.followers.toString())).toBeDefined();
+    fireEvent.click(getByText('Follow'));
+    expect(getByText((source.profile.followers + 1).toString())).toBeDefined();
+    fireEvent.click(getByText('Unfollow'));
+    expect(getByText(source.profile.followers.toString())).toBeDefined();
 
     fireEvent.click(getByTitle('Like'));
     expect(getByText((source.profile.likes + 1).toString())).toBeDefined();

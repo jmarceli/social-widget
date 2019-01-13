@@ -18,6 +18,10 @@ export const likeRequest = (addLike: boolean): t.LikeRequestAction => ({
   type: c.LIKE_REQUEST,
   payload: { addLike },
 });
+export const followRequest = (addFollow: boolean): t.FollowRequestAction => ({
+  type: c.FOLLOW_REQUEST,
+  payload: { addFollow },
+});
 
 // export const save = (deviceId: string, editableData: t.Editable): t.SaveAction => ({
 //   deviceId,

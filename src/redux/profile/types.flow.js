@@ -36,5 +36,9 @@ export type LikeRequestAction = {|
   type: typeof c.LIKE_REQUEST,
   payload: { addLike: boolean },
 |};
+export type FollowRequestAction = {|
+  type: typeof c.FOLLOW_REQUEST,
+  payload: { addFollow: boolean },
+|};
 
 export type Action = LoadRequestAction | LoadSuccessAction | LoadErrorAction;
