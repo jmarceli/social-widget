@@ -53,38 +53,6 @@ export class App extends React.Component<Props, State> {
     }));
   }
 
-  // handleFollow() {
-  //   this.setState(oldState => {
-  //     const alreadyFollowed = oldState.isFollowed;
-  //     const followers = alreadyFollowed
-  //       ? oldState.profile.followers - 1
-  //       : oldState.profile.followers + 1;
-
-  //     return {
-  //       profile: { ...oldState.profile, followers },
-  //       isFollowed: !oldState.isFollowed,
-  //     };
-  //   });
-  // }
-
-  // handleShare() {
-  //   window.alert(window.location.href);
-  // }
-
-  // handleLike() {
-  //   this.setState(oldState => {
-  //     const alreadyLiked = oldState.isLiked;
-  //     const likes = alreadyLiked
-  //       ? oldState.profile.likes - 1
-  //       : oldState.profile.likes + 1;
-
-  //     return {
-  //       profile: { ...oldState.profile, likes },
-  //       isLiked: !oldState.isLiked,
-  //     };
-  //   });
-  // }
-
   handleCommentsHide() {
     this.setState(oldState => {
       return {
