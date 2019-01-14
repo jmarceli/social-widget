@@ -2,8 +2,8 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 // import thunk from 'redux-thunk';
-import reducer from './reducer';
-import epic from './epic';
+import reducer from './reducers';
+import epic from './epics';
 
 const epicMiddleware = createEpicMiddleware();
 
