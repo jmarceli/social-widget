@@ -12,6 +12,7 @@ import * as t from './types.flow';
 
 const loadEpic = (action$: Observable<t.Action>): Observable<t.Action> =>
   action$.pipe(
+    // thanks to non-FSA compilant naming we can do this (without looking into payload or error)
     ofType(c.LOAD_REQUEST),
     mergeMap(action =>
       merge(

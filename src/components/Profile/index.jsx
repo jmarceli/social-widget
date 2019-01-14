@@ -162,7 +162,7 @@ export const ProfileStyled = injectSheet(styles)(Profile);
 
 const mapStateToProps = state => ({
   data: state.profile.data,
-  isLoading: state.profile.isLoading,
+  isLoading: state.profile.isLoading || state.ui.fonts.isLoading,
   error: state.profile.error,
 });
 

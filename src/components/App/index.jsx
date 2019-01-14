@@ -3,13 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Profile from '../Profile';
 import Comments from '../Comments';
-import WebFont from 'webfontloader';
 import injectSheet from 'react-jss';
 
 import { loadData } from '../../dataSources';
 import type { Comment } from '../../dataSources';
 
 import * as a from '../../redux/profile/actions';
+import { fontsRequest } from '../../redux/ui/actions';
 
 import styles from './styles';
 
@@ -17,34 +17,24 @@ type Props = {
   classes: { [string]: {} },
   dataUrl: string,
   loadProfileData: () => void,
+  loadFonts: () => void,
 };
 type State = {
   commentList: Comment[],
   commentsHidden: boolean,
-  isLoadingFont: boolean,
   isLoadingData: boolean,
 };
 
 export class App extends React.Component<Props, State> {
   state = {
     isLoadingData: true,
-    isLoadingFont: true,
     commentsHidden: false,
     commentList: [],
   };
 
   async componentDidMount() {
     this.props.loadProfileData();
-    WebFont.load({
-      google: {
-        families: ['Montserrat:400,600', 'sans-serif'],
-      },
-      fontactive: () => {
-        this.setState(() => ({
-          isLoadingFont: false,
-        }));
-      },
-    });
+    this.props.loadFonts();
 
     const data = await loadData(this.props.dataUrl);
     this.setState(() => ({
@@ -87,12 +77,7 @@ export class App extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const {
-      commentList,
-      isLoadingFont,
-      isLoadingData,
-      commentsHidden,
-    } = this.state;
+    const { commentList, isLoadingData, commentsHidden } = this.state;
 
     return (
       <div className={classes.root}>
@@ -103,7 +88,7 @@ export class App extends React.Component<Props, State> {
               <Profile url={this.props.dataUrl} />
             </div>
             <Comments
-              isLoading={isLoadingFont || isLoadingData}
+              isLoading={isLoadingData}
               isHidden={commentsHidden}
               list={commentList}
               handleHide={() => this.handleCommentsHide()}
@@ -120,5 +105,6 @@ export default connect(
   undefined,
   (dispatch, props) => ({
     loadProfileData: () => dispatch(a.loadRequest(props.dataUrl)),
+    loadFonts: () => dispatch(fontsRequest()),
   }),
 )(injectSheet(styles)(App));
