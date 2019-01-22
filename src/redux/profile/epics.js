@@ -1,27 +1,30 @@
 // @flow
 import { combineEpics, ofType } from 'redux-observable';
 import { Observable, from, of, merge } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, debounceTime } from 'rxjs/operators';
 
 import { load } from './logic';
 
-import * as c from './constants';
-import * as a from './actions';
+import { LOAD_REQUEST } from './constants';
+import { loadSuccess, loadError } from './actions';
 
-import * as t from './types.flow';
+import type { Action } from './types.flow';
 
-const loadEpic = (action$: Observable<t.Action>): Observable<t.Action> =>
+const loadEpic = (action$: Observable<Action>): Observable<Action> =>
   action$.pipe(
     // thanks to non-FSA compilant naming we can do this (without looking into payload or error)
-    ofType(c.LOAD_REQUEST),
+    ofType(LOAD_REQUEST),
+    debounceTime(500),
     mergeMap(action =>
-      merge(
-        // of(a.loadError({ error: 'Some error' })),
-        from(load(action.payload.url)).pipe(
-          // takeUntil(action$.pipe(ofType(c.LOAD_ERROR))),
-          map(response => a.loadSuccess(response)),
-          catchError(error => of(a.loadError({ error }))),
-        ),
+      // () =>
+      //   of({ content: 'test123' }).pipe(map(response => loadSuccess(response))),
+
+      // of(a.loadError({ error: 'Some error' })),
+      from(load(action.payload.url)).pipe(
+        // from(Promise.resolve({ content: 'test123' })).pipe(
+        // takeUntil(action$.pipe(ofType(c.LOAD_ERROR))),
+        map(response => loadSuccess(response.content)),
+        catchError(error => of(loadError({ error }))),
       ),
     ),
   );
